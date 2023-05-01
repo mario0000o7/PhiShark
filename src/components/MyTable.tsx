@@ -1,4 +1,4 @@
-import { Table,useAsyncList } from '@nextui-org/react';
+import {Popover, Table, Text, useAsyncList} from '@nextui-org/react';
 import React from 'react';
 
 import pool from './mariadbPool';
@@ -57,27 +57,63 @@ export default function MyTable(){
                 {(item) => (
                     <Table.Row key={item['id']}>
                         <Table.Cell css={{textAlign:'start',width:'40%'}}>
-                            {item['email']}
+                            <Popover>
+                                <Popover.Trigger>
+                                    {item['email']}
+                                </Popover.Trigger>
+                                <Popover.Content >
+                                    <Text css={{ p: "$xs" }}>{item['email']}</Text>
+                                </Popover.Content>
+                            </Popover>
                         </Table.Cell>
                         {item['skradzione_dane'] === 1 ? (
-
                                 <Table.Cell css={{background:'red',textAlign:'center',width:'40%'}}>
-                                    Skradzione dane
+                                    <Popover>
+                                        <Popover.Trigger>
+                                            Skradzione dane
+                                        </Popover.Trigger>
+                                        <Popover.Content >
+                                            <Text css={{ p: "$xs" }}>Skradzione dane</Text>
+                                        </Popover.Content>
+                                    </Popover>
                                 </Table.Cell>
                         ) : item['url'] === 1 ? (
 
                                 <Table.Cell css={{background:'#F3BB2C',textAlign:'center',width:'40%'}}>
-                                    Otwarcie linku
+                                    <Popover>
+                                        <Popover.Trigger>
+                                            Otwarcie linku
+                                        </Popover.Trigger>
+                                        <Popover.Content >
+                                            <Text css={{ p: "$xs" }}>Otwarcie linku</Text>
+                                        </Popover.Content>
+                                    </Popover>
                                 </Table.Cell>
                         ) : item['zalacznik'] === 1 ? (
 
                                 <Table.Cell css={{background:'#E8AA5E',textAlign:'center',width:'40%'}}>
-                                    Otwarcie załącznika
+                                    <Popover>
+                                        <Popover.Trigger>
+                                            Otwarcie załącznika
+                                        </Popover.Trigger>
+                                        <Popover.Content >
+                                            <Text css={{ p: "$xs" }}>Otwarcie załącznika</Text>
+                                        </Popover.Content>
+                                    </Popover>
+
                                 </Table.Cell>
                         ) : (
 
                                 <Table.Cell css={{background:'green',textAlign:'center',width:'40%'}}>
-                                    Nie otworzono
+                                    <Popover>
+                                        <Popover.Trigger>
+                                            Nie otworzono
+                                        </Popover.Trigger>
+                                        <Popover.Content >
+                                            <Text css={{ p: "$xs" }}>Nie otworzono</Text>
+                                        </Popover.Content>
+                                    </Popover>
+
                                 </Table.Cell>
                         )}
                     </Table.Row>
