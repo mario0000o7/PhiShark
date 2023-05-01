@@ -90,6 +90,7 @@
   text-align: center;
   border: 2px solid rgba(0, 0, 0, 0.24);
   background-color: #000000;
+  margin-bottom: 5px;
 
 }
 .header{
@@ -98,6 +99,16 @@
   text-align: center;
   border: 2px solid rgba(13, 29, 58, 0.68);
   background-color: #3B4256;
+}
+.slider{
+  background:#3B4256 ;
+  border: solid 1px #82CFD0;
+  border-radius: 8px;
+  height: 7px;
+  width: 100%;
+  outline: none;
+  transition: background 450ms ease-in;
+  -webkit-appearance: none;
 }
 .center {
   display: flex;

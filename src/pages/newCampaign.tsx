@@ -49,7 +49,7 @@ export default function Home() {
                 <button className={styles.button}>Dodaj adresy mail</button>
                 <button className={styles.button}>Załaduj adresy mail</button>
                 <h3 className={styles.header}>Przedział wysłania mailów</h3>
-                    <input style={{width:"100%"}} type="range" min="0" max="100" />
+                    <input className={styles.slider} type="range" min="0" max="100" />
                 </div>
                 <div>
                     <form>
@@ -71,7 +71,7 @@ export default function Home() {
                    </form>
                    <form>
                        <header className={styles.header}>Załączniki:</header>
-                       <input type="file" onChange={event => setAttachments(event.target.value)}></input>
+                       <input className={styles.button} type="file" onChange={event => setAttachments(event.target.value)}></input>
                    </form>
                </div>
 
