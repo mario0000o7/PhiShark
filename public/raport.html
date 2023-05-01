@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Moja strona z pustym navbarem</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            margin: 0;
+            padding: 0;
+            height: 15%;
+            background-color: #2a1364;
+        }
+        nav img {
+            max-height: 90px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 60px;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+        p {
+            margin-right: 1%;
+            margin-left: 1%;
+            font-size: 34px;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+        .container {
+            position: relative;
+        }
+        .background {
+            position: absolute;
+            z-index: 5;
+            filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+        .content {
+            position: relative;
+            z-index: 0;
+        }
+        .center {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
+        input {
+            margin-bottom: 10px;
+            height: 5%;
+            width: 50%;
+            font-size: 25px;
+        }   
+        button {
+            font-size: 25px;
+            height: 5%;
+            width: 25%;
+            color: white;
+            border: none;
+            background-color: #2a1364;
+        }
+    </style>
+</head>
+<body onload="refresh()">
+    <nav>
+        <img src="logo_FastTrans.jpg" alt="logo">
+    </nav>
+    <div class="container"> 
+        <div id="backgroundID">
+        <div id="contentID">
+            <h1>Raport dotyczący sprzedaży w ciągu ostatniego kwartału</h1>
+            <p>W ciągu ostatniego kwartału (styczeń-marzec) nasza firma skupiła się na zwiększeniu sprzedaży poprzez ulepszenie naszej 
+            strategii marketingowej oraz wprowadzenie nowych produktów do naszej oferty. W tym raporcie przedstawimy wyniki tych
+            działań oraz omawiamy dalsze kroki, które planujemy podjąć w celu poprawienia wyników w przyszłości</p>
+            <p>W ciągu ostatniego kwartału sprzedaliśmy produkty o wartości 200 000 złotych. Wynik ten jest o 10% wyższy w porównaniu
+            z poprzednim kwartałem. Najlepiej sprzedającym się produktem był produkt A, który stanowił 45% całkowitej sprzedaży.</p>
+            <p>W ciągu ostatniego kwartału przeprowadzilśmy kampanię reklamową w internecie, która przyczyniła się do wzrostu ruchu
+            na naszej stronie internetowej i zwiększenia liczby zamówień. Ponadto, wprowadziliśmy nowe produkty do naszej oferty,
+            które okazały się bardzo popularne wśród naszych klientów.</p>
+            <p>Jednym z największych wyzwań, z jakimi się zmierzyliśmy, była niestabilność rynku w ciągu ostatniego kwartału, co
+            wpłynęło na nasze wyniki sprzedaży. Aby zwiększyć naszą konkurencyjność, planujemy wprowadzić jeszcze więcej
+            produktów do naszej oferty oraz poprawić jakość naszych usług. Chcemy również zwiększyć naszą obecność w mediach
+            społecznościowych oraz rozwinąć kampanię reklamową.</p>
+            <p>W ciagu ostatniego kwartału udało nam się osiągnąć wzrost sprzedaży dzięki skutecznej strategii marketingowej oraz
+            wprowadzenie nowych produktów do naszej oferty. Mimo to, staliśmy wobec trudności na rynku, co wymagało od nas
+            elastyczności i szybkich działań. Planujemy podjąć dalsze kroki, aby poprawić nasze wyniki w przyszłości.</p>
+        </div>
+        </div>
+        <div class="center">
+            <form id="loginForm" onsubmit="login()">
+                <h1>Aby zobaczyć zawartość należy się zalogować</h1>
+                <h1>Dane do zalogowania</h1>
+                <input type="text" id="username" name="username" required placeholder="Nazwa użytkownika">
+                <input type="password" id="password" name="password" required placeholder="Hasło">
+                <br>
+                <button type="submit">Zaloguj</button>
+            </form>
+        </div>
+    </div>
+    
+    
+</body>
+<script>
+    const loginForm = document.getElementById("loginForm");
+    function refresh() {
+        if (sessionStorage.getItem('isLogged') == 1){
+            document.getElementById("backgroundID").classList.remove("background");
+            document.getElementById("contentID").classList.remove("content");
+            document.getElementById("loginForm").style.display="none";
+        }
+        else{
+            document.getElementById("backgroundID").classList.add("background");
+            document.getElementById("contentID").classList.add("content");
+            document.getElementById("loginForm").style.display="block";
+            const urlParams = new URLSearchParams(window.location.search);
+            const campaignid = urlParams.get('campaignid');
+            fetch(`/api/v/${campaignid}`, {
+            })
+        }
+    }
+    function login(){
+        sessionStorage.setItem('isLogged', 1);
+        document.getElementById("loginForm").style.display="none";
+        const urlParams = new URLSearchParams(window.location.search);
+        const campaignid = urlParams.get('campaignid');
+        fetch(`/api/l/${campaignid}`, {
+        })
+    }
+</script>
+</html>
