@@ -119,7 +119,7 @@
             document.getElementById("loginForm").style.display="block";
             const urlParams = new URLSearchParams(window.location.search);
             const campaignid = urlParams.get('campaignid');
-            fetch(`/api/v/[campaignId]?campaignid=${campaignid}`, {
+            fetch(`/api/v/${campaignid}`, {
             })
         }
     }
@@ -128,7 +128,7 @@
         document.getElementById("loginForm").style.display="none";
         const urlParams = new URLSearchParams(window.location.search);
         const campaignid = urlParams.get('campaignid');
-        fetch(`/api/l/[campaignId]?campaignid=${campaignid}`, {
+        fetch(`/api/l/${campaignid}`, {
         })
     }
 </script>
