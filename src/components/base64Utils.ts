@@ -15,5 +15,7 @@ export const decodeCustomCampaignId = (campaignId: string) => {
         newDecodedCampaignId += String.fromCharCode(decodedCampaignId.charCodeAt(i) - 1);
     }
     newDecodedCampaignId = Buffer.from(newDecodedCampaignId, 'base64').toString('ascii');
-    return Buffer.from(newDecodedCampaignId).toString('ascii');
+    let finalCampaignId = Buffer.from(newDecodedCampaignId).toString('ascii');
+    let finalCampaignIdArray = finalCampaignId.split(';');
+    return { id: finalCampaignIdArray[0], email: finalCampaignIdArray[1] };
 }
