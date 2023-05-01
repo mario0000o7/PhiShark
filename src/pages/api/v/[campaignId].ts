@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest,res: NextApiResponse) 
     let result;
     try {
         conn = await pool.getConnection();
-        result = await conn.query("SELECT * FROM maile WHERE id_kampanii = ?", [id]);
+        result = await conn.query("SELECT * FROM maile WHERE id_kampanii = ?", [campaignId]);
     } finally {
         if (conn) conn.release(); //release to pool
     }
