@@ -10,7 +10,7 @@ export default function MyNavbar({title}:any) {
                 </Navbar.Brand>
 
 
-                <Navbar.Content style={{marginRight:'25%'}} >
+                <Navbar.Content  >
 
                         <Text  size={50} style={{textAlign: 'center'}}>
                             {title}

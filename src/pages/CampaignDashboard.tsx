@@ -3,8 +3,10 @@ import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import MyNavbar from "@/components/MyNavbar";
-import {Grid} from "@nextui-org/react";
+import {Grid,Button} from "@nextui-org/react";
 import MyTable from "@/components/MyTable";
+import {Box} from "@/components/Box";
+import MyChart from "@/components/MyChart";
 const inter = Inter({ subsets: ['latin'] })
 
 
@@ -21,7 +23,7 @@ export default function CampaignDashboard() {
             <MyNavbar title={'Kampania 1'}  />
             <main >
                 <div style={{width:'100%',height:'100%'}}>
-                    <Grid.Container gap={1} justify="center">
+                    <Grid.Container gap={1} justify="center" css={{width:'100%',height:'100%'}}>
                         <Grid xs={4}>
                             <div className={styles.card} style={{background:'#3B4256',width:'100%',textAlign:'center'}}>
                                 <h3>Lista Email</h3>
@@ -33,16 +35,29 @@ export default function CampaignDashboard() {
                             </div>
 
                         </Grid>
-                        <Grid xs={4}>
-                            <div className={styles.card} style={{background:'#3B4256',width:'100%',height:'70vh'}}>
+                        <Grid xs={4} css={{height:'70vh'}}>
                                 <MyTable/>
-                            </div>
+
                         </Grid>
                         <Grid xs={8}>
-                            <div className={styles.card} style={{background:'#3B4256',width:'100%',textAlign:'center'}}>
-
-                            </div>
+                            <MyChart/>
                         </Grid>
+                        <Grid xs={2}>
+                            <Button color="primary" size={'md'}>Wyślij</Button>
+                        </Grid>
+
+                        <Grid xs={2} css={{justifyContent:'right'}}>
+                            <Button color="primary" size={'md'}  >Wyślij</Button>
+                        </Grid>
+                        <Grid xs={4}>
+                            <Button size={'md'} color="primary" >Wyślij</Button>
+                        </Grid>
+                        <Grid xs={4} css={{justifyContent:'right'}}>
+                            <Button color="primary" size={'md'}>Wyślij</Button>
+                        </Grid>
+
+
+
 
                     </Grid.Container>
                 </div>
