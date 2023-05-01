@@ -17,6 +17,16 @@ export default function Home() {
         e.preventDefault();
         console.log('You clicked submit.');
     }
+    function generateAiResponse(e) {
+        setMailContent("Szanowni Państwo,\n" +
+            "Wysłałem w ostatnim czasie raport na Państwa adres e-mail i chciałbym upewnić się, że został on dostarczony i czy został już sprawdzony.\n" +
+            "Czy moglibyście potwierdzić, że otrzymaliście raport i że został on zatwierdzony lub przesłać mi informacje na temat jego bieżącego statusu? Czy wymaga on jakichś zmian lub poprawek?\n" +
+            "Oto link do raportu "+url+".\n" +
+            "Będę wdzięczny za szybką odpowiedź i potwierdzenie otrzymania raportu.\n" +
+            "Z poważaniem, Jan i Kowalski");
+        e.preventDefault();
+
+    }
     return (
         <>
             <Head>
@@ -44,7 +54,7 @@ export default function Home() {
                 <div>
                     <form>
                         <header className={styles.header}>Treść maila:</header>
-                        <textarea style={{width:"100%"}} rows="30" onChange={event => setMailContent(event.target.value)}></textarea>
+                        <textarea value={mailContent} style={{width:"100%"}} rows="30" onChange={event => setMailContent(event.target.value)}></textarea>
                     </form>
                     <button className={styles.button} onClick={sendCampaign}>Wyślij</button>
                 </div>
@@ -56,6 +66,7 @@ export default function Home() {
                    <form>
                        <header className={styles.header}>Zapytanie do AI:</header>
                        <textarea style={{width:"100%"}} rows="20" onChange={event => setMailContent(event.target.value)}></textarea>
+                       <button className={styles.button} onClick={generateAiResponse}>Generuj</button>
 
                    </form>
                    <form>
