@@ -1,25 +1,20 @@
 import { Navbar, Button, Link, Text } from "@nextui-org/react";
 import { Layout } from "./Layout.js";
-
-export default function MyNavbar() {
+import Image from "next/image";
+export default function MyNavbar({title}:any) {
     return (
-            <Navbar isBordered variant="floating">
+            <Navbar isBordered variant="sticky" maxWidth={'fluid'}>
+                <Navbar.Brand>
+                    <Image src={'/phisharklogo.png'} alt={'Logo'} width={70} height={70}/>
 
-                <Navbar.Content hideIn="xs" variant="highlight-rounded">
-                    <Navbar.Link href="#">Features</Navbar.Link>
-                    <Navbar.Link isActive href="#">Customers</Navbar.Link>
-                    <Navbar.Link href="#">Pricing</Navbar.Link>
-                    <Navbar.Link href="#">Company</Navbar.Link>
-                </Navbar.Content>
-                <Navbar.Content>
-                    <Navbar.Link color="inherit" href="#">
-                        Login
-                    </Navbar.Link>
-                    <Navbar.Item>
-                        <Button auto flat as={Link} href="#">
-                            Sign Up
-                        </Button>
-                    </Navbar.Item>
+                </Navbar.Brand>
+
+
+                <Navbar.Content style={{marginRight:'25%'}} >
+
+                        <Text  size={50} style={{textAlign: 'center'}}>
+                            {title}
+                        </Text>
                 </Navbar.Content>
             </Navbar>
     )
