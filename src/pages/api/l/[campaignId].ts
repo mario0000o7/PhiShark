@@ -15,7 +15,7 @@ export default async function handler(req: NextApiRequest,res: NextApiResponse) 
     } finally {
         if (conn) conn.release(); //release to pool
     }
-    res.status(200).json(result)
+    res.send(200)
 }
 
 

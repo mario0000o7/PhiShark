@@ -8,6 +8,7 @@ type EmailPayload = {
   to: string
   subject: string
   html: string
+  from: string
 }
 
 // Replace with your SMTP credentials
@@ -28,29 +29,45 @@ const smtpOptions = {
 export const sendEmail = async (data: EmailPayload) => {
   const transporter = nodemailer.createTransport({
     ...smtpOptions,
-  })
+    })
 
-  return await transporter.sendMail({
-    from: process.env.SMTP_FROM_EMAIL,
-    ...data,
-  })
+  return await transporter.sendMail({...data})
 }
 
 
 
 export default async function handler(req: NextApiRequest,res: NextApiResponse) {
-    let conn;
+    let conn: any;
     let result;
+    let campaignId: number;
     console.log("Sending email...")
-    // await sendEmail({
-    //     to: "tobiasz@kstrzva.pl",
-    //     subject: "Welcome to NextAPI",
-    //     html: "Hello, this is a test email from NextAPI",
-    // });
-    let campaignId = createCustomCampaignId(1, "tobiasz@kstrzva.pl")
-    
-    return res.status(200).json({ message: "Email sent successfully", campaignId: campaignId, capmaignDecoded: decodeCustomCampaignId(campaignId) });
-    //res.status(200).json(result)
+    console.log(req.body)
+    req.body.name = "Kampania testowa"
+
+    try {
+      conn = await pool.getConnection();
+      result = await conn.query("INSERT INTO kampanie (nazwa, zalacznik, url) VALUES (?, 'none', 'none')", [req.body.name]);
+      result = await conn.query("SELECT * FROM kampanie WHERE nazwa = ?", [req.body.name]);
+      campaignId = result[0].id;
+    } finally {
+      if (conn) await conn.end(); //release to pool
+    }
+    try{
+      conn = await pool.getConnection();
+      req.body.mails.forEach(async (mail: string) => {
+        await sendEmail({
+          from: req.body.mail + " " + process.env.SMTP_USER,
+          to: mail,
+          subject: "Testowa kampania",
+          html: req.body.mailContent.replace("{{campaignLink}}", `<a href="localhost:3000/report.html?campaignId=${createCustomCampaignId(campaignId, mail)}> Click here </a>`)
+        });
+        result = await conn.query("INSERT INTO maile (id_kampanii, email) VALUES (?, ?)", [campaignId, mail]);
+    })}
+    finally {
+      if (conn) await conn.end(); //release to pool
+    }  
+    //return res.status(200).json({ message: "Email sent successfully", campaignId: campaignId, capmaignDecoded: decodeCustomCampaignId(campaignId) });
+    return res.status(200);
 }
 
 

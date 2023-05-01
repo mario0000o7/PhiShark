@@ -7,6 +7,7 @@ import { decodeCustomCampaignId } from '@/components/base64Utils';
 export default async function handler(req: NextApiRequest,res: NextApiResponse) {
     const { campaignId } = req.query;
     let decodedCampaignId = decodeCustomCampaignId(campaignId as string);
+    console.log(decodedCampaignId)
     let conn;
     let result;
     try {
@@ -15,7 +16,7 @@ export default async function handler(req: NextApiRequest,res: NextApiResponse) 
     } finally {
         if (conn) conn.release(); //release to pool
     }
-    res.status(200).json(result)
+    res.send(200)
 }
 
 
