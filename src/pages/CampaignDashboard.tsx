@@ -21,7 +21,7 @@ export default function CampaignDashboard() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <MyNavbar title={'Kampania 1'}  />
-            <main >
+            <main style={{background:'#D9D9D9'}} >
                 <div style={{width:'100%',height:'100%'}}>
                     <Grid.Container gap={1} justify="center" css={{width:'100%',height:'100%'}}>
                         <Grid xs={4}>
@@ -43,17 +43,17 @@ export default function CampaignDashboard() {
                             <MyChart/>
                         </Grid>
                         <Grid xs={2}>
-                            <Button color="primary" size={'md'}>Wyślij</Button>
+                            <Button color="primary" size={'md'} css={{background:'black'}}>Generuj CSV</Button>
                         </Grid>
 
                         <Grid xs={2} css={{justifyContent:'right'}}>
-                            <Button color="primary" size={'md'}  >Wyślij</Button>
+                            <Button color="primary" size={'md'}  css={{background:'black'}}>Poinformuj</Button>
                         </Grid>
                         <Grid xs={4}>
-                            <Button size={'md'} color="primary" >Wyślij</Button>
+                            <Button size={'md'} color="primary" css={{background:'black'}}>Lista Kamoanii</Button>
                         </Grid>
                         <Grid xs={4} css={{justifyContent:'right'}}>
-                            <Button color="primary" size={'md'}>Wyślij</Button>
+                            <Button color="primary" size={'md'} css={{background:'black'}}>Powrót</Button>
                         </Grid>
 
 

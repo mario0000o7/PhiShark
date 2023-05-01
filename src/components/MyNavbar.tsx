@@ -3,7 +3,7 @@ import { Layout } from "./Layout.js";
 import Image from "next/image";
 export default function MyNavbar({title}:any) {
     return (
-            <Navbar isBordered variant="sticky" maxWidth={'fluid'}>
+            <Navbar isBordered variant="sticky" maxWidth={'fluid'} css={{background:'#161C2E'}}>
                 <Navbar.Brand>
                     <Image src={'/phisharklogo.png'} alt={'Logo'} width={70} height={70}/>
 

@@ -40,14 +40,14 @@ export default function MyTable(){
                 height: "100%",
                 padding:"0px",
                 margin:"0px",
-                background:'#3B4256',
+                background:'white',
 
             }}
             selectionMode="multiple"
         >
             <Table.Header >
-                <Table.Column css={{color:'white',textAlign:'start',width:'40%'}}>Email</Table.Column>
-                <Table.Column css={{color:'white',textAlign:'center',width:'40%'}}>Status</Table.Column>
+                <Table.Column css={{color:'black',textAlign:'start',width:'40%'}}>Email</Table.Column>
+                <Table.Column css={{color:'black',textAlign:'center',width:'40%'}}>Status</Table.Column>
             </Table.Header>
             <Table.Body
                 items={list.items}

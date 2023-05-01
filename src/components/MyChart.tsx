@@ -42,14 +42,17 @@ const options = {
         y: {
             beginAtZero: true,
             ticks: {
-                color: 'white',
+                color: 'black',
             }
         },
         x: {
             ticks: {
-                color: 'white',
+                color: 'black',
             }
         }
+    },
+    layout: {
+        padding: 10,
     },
     elements: {
         line: {
@@ -65,14 +68,32 @@ const options = {
         },
         title: {
             display: true,
+            align: 'start',
+            text: 'Wysłane maile',
+            font: {
+                size: 20,
+            },
 
         },
+        subtitle: {
+            display: true,
+            text:'200',
+            align: 'start',
+            font: {
+                size: 20,
+            },
+            padding:{
+                bottom: 20,
+            }
+
+        }
     },
 };
-
 export default function MyChart() {
+
+    // @ts-ignore
     return (
-            <Bar data={dataTmp2} options={options} style={{background:'#3B4256',borderRadius:'20px'}} />
+            <Bar data={dataTmp2} options={options} style={{background:'white',borderRadius:'20px'}} />
 
     )
 }
