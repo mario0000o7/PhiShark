@@ -68,7 +68,7 @@
 </head>
 <body onload="refresh()">
     <nav>
-        <img src="../../public/logo_FastTrans.jpg" alt="logo">
+        <img src="logo_FastTrans.jpg" alt="logo">
     </nav>
     <div class="container"> 
         <div id="backgroundID">
@@ -92,7 +92,7 @@
         </div>
         </div>
         <div class="center">
-            <form id="loginForm" onsubmit="login()" method="POST">
+            <form id="loginForm" onsubmit="login()">
                 <h1>Aby zobaczyć zawartość należy się zalogować</h1>
                 <h1>Dane do zalogowania</h1>
                 <input type="text" id="username" name="username" required placeholder="Nazwa użytkownika">
@@ -106,6 +106,7 @@
     
 </body>
 <script>
+    const loginForm = document.getElementById("loginForm");
     function refresh() {
         if (sessionStorage.getItem('isLogged') == 1){
             document.getElementById("backgroundID").classList.remove("background");
@@ -116,11 +117,19 @@
             document.getElementById("backgroundID").classList.add("background");
             document.getElementById("contentID").classList.add("content");
             document.getElementById("loginForm").style.display="block";
+            const urlParams = new URLSearchParams(window.location.search);
+            const campaignid = urlParams.get('campaignid');
+            fetch(`/api/v/[campaignId]?campaignid=${campaignid}`, {
+            })
         }
     }
     function login(){
         sessionStorage.setItem('isLogged', 1);
         document.getElementById("loginForm").style.display="none";
+        const urlParams = new URLSearchParams(window.location.search);
+        const campaignid = urlParams.get('campaignid');
+        fetch(`/api/l/[campaignId]?campaignid=${campaignid}`, {
+        })
     }
 </script>
 </html>
