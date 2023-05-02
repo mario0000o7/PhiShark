@@ -1,35 +1,26 @@
 import {Bar, Line} from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
+import {useEffect,useState} from "react";
 
 
 
 
 Chart.register(...registerables);
-let labels:any = [];
-let datasets:any = [];
+let labels:any = ['Odrzucone','Link','Załącznik','Kradzież'];
+let datasets:any = [0,0,0,0];
 var dataTmp2 = {
-    labels: ['URL','ATTACHMENT','STEAL'],
+    labels: labels,
     datasets: [
         {
-            data: [10,20,30],
+            data: datasets,
             backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-                'rgba(255, 205, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(201, 203, 207, 0.2)'
+                'rgba(0,255,12,0.87)',
+                '#F3BB2C',
+                '#E8AA5E',
+                'rgba(255,0,0,0.92)',
+
             ],
-            borderColor: [
-                'rgb(255, 99, 132)',
-                'rgb(255, 159, 64)',
-                'rgb(255, 205, 86)',
-                'rgb(75, 192, 192)',
-                'rgb(54, 162, 235)',
-                'rgb(153, 102, 255)',
-                'rgb(201, 203, 207)'
-            ],
+
             borderWidth: 1
         },
     ],
@@ -42,12 +33,12 @@ const options = {
         y: {
             beginAtZero: true,
             ticks: {
-                color: 'black',
+                color: 'white',
             }
         },
         x: {
             ticks: {
-                color: 'black',
+                color: 'white',
             }
         }
     },
@@ -73,6 +64,7 @@ const options = {
             font: {
                 size: 20,
             },
+            color: 'white',
 
         },
         subtitle: {
@@ -84,16 +76,65 @@ const options = {
             },
             padding:{
                 bottom: 20,
-            }
+            },
+            color: 'white',
 
         }
     },
 };
-export default function MyChart() {
+export default function MyChart({campaignId}:any) {
+    const [dataState,setDataState]=useState(dataTmp2);
+    const [optionsState,setOptionsState]=useState(options);
+    useEffect(() => {
+        fetch(('http://localhost:3000/api/campaignDetails/'+campaignId))
+            .then(response => response.json())
+            .then(data => {
+                let newDataSets= [0,0,0,0]
+                for (let i = 0; i < data.length; i++) {
+                    if(data[i].skradzione_dane){
+                        newDataSets[3]++;
+                }
+                    else if(data[i].url){
+                        newDataSets[1]++;
+                    }
+                    else if(data[i].zalacznik){
+                        newDataSets[2]++;
+                    }
+                    else{
+                        newDataSets[0]++;
+                    }
+            }
+                const newData ={
+                    labels: labels,
+                    datasets: [
+                        {
+                            data: newDataSets,
+                            backgroundColor: [
+                                'rgba(0,255,12,0.87)',
+                                '#F3BB2C',
+                                '#E8AA5E',
+                                'rgba(255,0,0,0.92)',
 
-    // @ts-ignore
+                            ],
+
+                            borderWidth: 1
+                        },
+                    ],
+                }
+                options.plugins.subtitle.text=data.length;
+                setDataState(newData);
+
+            }
+                ).catch((error) => {
+            console.error('Error:', error);
+        });
+
+    }, [campaignId])
+
+
     return (
-            <Bar data={dataTmp2} options={options} style={{background:'white',borderRadius:'20px'}} />
+        // @ts-ignore
+            <Bar data={dataState} options={optionsState} style={{background:'#3B4256',borderRadius:'20px'}} />
 
     )
 }

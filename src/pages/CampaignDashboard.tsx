@@ -1,17 +1,25 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import MyNavbar from "@/components/MyNavbar";
-import {Grid,Button} from "@nextui-org/react";
+import {Grid, Button, Row, Col, Container} from "@nextui-org/react";
 import MyTable from "@/components/MyTable";
 import {Box} from "@/components/Box";
 import MyChart from "@/components/MyChart";
-const inter = Inter({ subsets: ['latin'] })
+import {useState,useEffect} from "react";
 
 
 
 export default function CampaignDashboard() {
+    const [csvData, setCsvData] = useState<any[]>([]);
+
+    function back(){
+        window.location.href = '/';
+    }
+    function generateCSV(){
+        setCsvData([])
+
+    }
     return (
         <>
             <Head>
@@ -20,47 +28,55 @@ export default function CampaignDashboard() {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <MyNavbar title={'Kampania 1'}  />
-            <main style={{background:'#D9D9D9'}} >
-                <div style={{width:'100%',height:'100%'}}>
+
+            <main style={{height:'100vh'}}>
+                <MyNavbar title={'Kampania 1'}  />
+                <Box style={{width:'100%',height:'80%'}}>
                     <Grid.Container gap={1} justify="center" css={{width:'100%',height:'100%'}}>
-                        <Grid xs={4}>
-                            <div className={styles.card} style={{background:'#3B4256',width:'100%',textAlign:'center'}}>
+                        <Grid xs={12} md={6} lg={4} >
+                            <Box  style={{background:'#3B4256',width:'100%',height:'100%',textAlign:'center'}}>
                                 <h3>Lista Email</h3>
-                            </div>
+                            </Box>
                         </Grid>
-                        <Grid xs={8}>
-                            <div className={styles.card} style={{background:'#3B4256',width:'100%',textAlign:'center'}}>
+                        <Grid xs={0} md={6} lg={8} >
+                            <Box  style={{background:'#3B4256',width:'100%',height:'100%',textAlign:'center'}}>
                                 <h3>Wykres</h3>
-                            </div>
+                            </Box>
 
                         </Grid>
-                        <Grid xs={4} css={{height:'70vh'}}>
-                                <MyTable/>
+                        <Grid xs={12} md={6} lg={4} css={{height:'100%'}}>
+                            <MyTable campaignId={1} generateCSV={csvData}/>
 
                         </Grid>
-                        <Grid xs={8}>
-                            <MyChart/>
+                        <Grid xs={12} md={0} lg={0} >
+                            <Box  style={{background:'#3B4256',width:'100%',height:'100%',textAlign:'center'}}>
+                                <h3>Wykres</h3>
+                            </Box>
+
                         </Grid>
-                        <Grid xs={2}>
-                            <Button color="primary" size={'md'} css={{background:'black'}}>Generuj CSV</Button>
+                        <Grid xs={12} md={6} lg={8} css={{height:'100%'}}>
+                            <MyChart campaignId={1}/>
+                        </Grid>
+                        <Grid xs={3} md={3} lg={2} >
+                            <Button color="gradient" onPress={generateCSV} size={'md'} >Generuj CSV</Button>
                         </Grid>
 
-                        <Grid xs={2} css={{justifyContent:'right'}}>
-                            <Button color="primary" size={'md'}  css={{background:'black'}}>Poinformuj</Button>
+                        <Grid xs={3} md={3} lg={2} css={{justifyContent:'right'}}>
+                            <Button color="gradient" size={'md'}  >Poinformuj</Button>
                         </Grid>
-                        <Grid xs={4}>
-                            <Button size={'md'} color="primary" css={{background:'black'}}>Lista Kamoanii</Button>
+                        <Grid lg={4} xs={3} md={3} >
+                            <Button size={'md'} color="gradient" >Lista Kampanii</Button>
                         </Grid>
-                        <Grid xs={4} css={{justifyContent:'right'}}>
-                            <Button color="primary" size={'md'} css={{background:'black'}}>Powrót</Button>
+                        <Grid lg={4} xs={3} md={3} css={{justifyContent:'right'}}>
+                            <Button color="gradient" onPress={back}  size={'md'} >Powrót</Button>
                         </Grid>
 
 
 
 
                     </Grid.Container>
-                </div>
+                </Box>
+
 
 
 
