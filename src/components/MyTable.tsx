@@ -21,7 +21,7 @@ interface MyTableProps {
     skradzione_dane: number;
 
 }
-export default function MyTable({campaignId,generateCSV}:any){
+export default function MyTable({campaignId,generateCSV, onSelectItems}:any){
     const [selectedItems, setSelectedItems] = useState({anchorKey:0,currentKey:0,size:0});
     function handleSelectedItems(keys: any) {
         setSelectedItems(keys);
@@ -71,7 +71,9 @@ export default function MyTable({campaignId,generateCSV}:any){
         list.reload();
     },[campaignId]);
 
-
+    useEffect(()=>{
+        onSelectItems(selectedItems);
+    },[selectedItems]);
 
     const list = useAsyncList<MyTableProps>({ load });
     return(

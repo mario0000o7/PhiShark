@@ -6,7 +6,7 @@ import {Grid, Button, Row, Col, Container, useModal} from "@nextui-org/react";
 import MyTable from "@/components/MyTable";
 import {Box} from "@/components/Box";
 import MyChart from "@/components/MyChart";
-import {useState,useEffect} from "react";
+import {useState,useEffect, SetStateAction} from "react";
 import ModalListOfCampaign from "@/components/ModalListOfCampaign";
 
 
@@ -15,17 +15,49 @@ export default function CampaignDashboard() {
     const [csvData, setCsvData] = useState<any[]>([]);
     const [campaignId,setCampaignId] = useState(0)
     const [nameOfCampaign,setNameOfCampaign] = useState('')
+    const [selectedItems, setSelectedItems] = useState([]);
+
+    function handleSelectedItems(items: any) {
+        setSelectedItems(items);
+    }
+
     // @ts-ignore
     const { setVisible, bindings } = useModal();
     function back(){
         window.location.href = '/';
     }
     function generateCSV(){
+        console.log(csvData);
         setCsvData([])
-
     }
     function showListOfCampaigns(){
         setVisible(true)
+    }
+    function sendWarning(){
+        let selectedItemsArray:any=[];
+        let csvData:any=[];
+        // @ts-ignore
+        if(selectedItems!='all')
+            (selectedItems as any).forEach((value:any, key:any) => {
+                selectedItemsArray.push(parseInt(key));
+            });
+        fetch(('http://localhost:3000/api/campaignDetails/'+campaignId))
+        .then(response => response.json())
+        .then(data => {
+            for(let i=0;i<data.length;i++){
+                // @ts-ignore
+                if(selectedItemsArray.includes(data[i].id)||selectedItems=='all'){
+                    csvData.push(data[i]);
+                }
+            }
+            fetch(('http://localhost:3000/api/sendWarning/'), {
+                method: 'POST',
+                headers : { 'Content-Type': 'application/json' },
+                body: JSON.stringify(csvData)
+            })
+        }).catch((error) => {
+            console.error('Error:', error);
+        });
     }
     return (
         <>
@@ -54,7 +86,7 @@ export default function CampaignDashboard() {
 
                         </Grid>
                         <Grid xs={12} md={6} lg={4} css={{height:'75vh'}}>
-                            <MyTable campaignId={campaignId} generateCSV={csvData}/>
+                            <MyTable campaignId={campaignId} generateCSV={csvData} onSelectItems={handleSelectedItems}/>
 
                         </Grid>
                         <Grid xs={12} md={0} lg={0} >
@@ -71,7 +103,7 @@ export default function CampaignDashboard() {
                         </Grid>
 
                         <Grid xs={3} md={3} lg={2} css={{justifyContent:'right'}}>
-                            <Button color="gradient" size={'md'}  >Poinformuj</Button>
+                            <Button color="gradient" size={'md'} onPress={sendWarning} >Poinformuj</Button>
                         </Grid>
                         <Grid lg={4} xs={3} md={3} >
                             <Button size={'md'} color="gradient" onPressEnd={showListOfCampaigns} >Lista Kampanii</Button>
