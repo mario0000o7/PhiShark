@@ -2,23 +2,30 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '@/styles/Home.module.css'
 import MyNavbar from "@/components/MyNavbar";
-import {Grid, Button, Row, Col, Container} from "@nextui-org/react";
+import {Grid, Button, Row, Col, Container, useModal} from "@nextui-org/react";
 import MyTable from "@/components/MyTable";
 import {Box} from "@/components/Box";
 import MyChart from "@/components/MyChart";
 import {useState,useEffect} from "react";
+import ModalListOfCampaign from "@/components/ModalListOfCampaign";
 
 
 
 export default function CampaignDashboard() {
     const [csvData, setCsvData] = useState<any[]>([]);
-
+    const [campaignId,setCampaignId] = useState(0)
+    const [nameOfCampaign,setNameOfCampaign] = useState('')
+    // @ts-ignore
+    const { setVisible, bindings } = useModal();
     function back(){
         window.location.href = '/';
     }
     function generateCSV(){
         setCsvData([])
 
+    }
+    function showListOfCampaigns(){
+        setVisible(true)
     }
     return (
         <>
@@ -29,10 +36,12 @@ export default function CampaignDashboard() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <main style={{height:'100vh'}}>
-                <MyNavbar title={'Kampania 1'}  />
-                <Box style={{width:'100%',height:'80%'}}>
-                    <Grid.Container gap={1} justify="center" css={{width:'100%',height:'100%'}}>
+            <main>
+
+                <MyNavbar title={nameOfCampaign}  />
+                {/*<Box style={{width:'100%'}}>*/}
+                    <ModalListOfCampaign bindings={bindings}  setVisible={setVisible} setCampaignId={setCampaignId} setNameofCampaign={setNameOfCampaign}/>
+                    <Grid.Container gap={1} justify="center" css={{width:'100%'}}>
                         <Grid xs={12} md={6} lg={4} >
                             <Box  style={{background:'#3B4256',width:'100%',height:'100%',textAlign:'center'}}>
                                 <h3>Lista Email</h3>
@@ -44,8 +53,8 @@ export default function CampaignDashboard() {
                             </Box>
 
                         </Grid>
-                        <Grid xs={12} md={6} lg={4} css={{height:'100%'}}>
-                            <MyTable campaignId={1} generateCSV={csvData}/>
+                        <Grid xs={12} md={6} lg={4} css={{height:'75vh'}}>
+                            <MyTable campaignId={campaignId} generateCSV={csvData}/>
 
                         </Grid>
                         <Grid xs={12} md={0} lg={0} >
@@ -54,8 +63,8 @@ export default function CampaignDashboard() {
                             </Box>
 
                         </Grid>
-                        <Grid xs={12} md={6} lg={8} css={{height:'100%'}}>
-                            <MyChart campaignId={1}/>
+                        <Grid xs={12} md={6} lg={8} css={{height:'75vh'}}>
+                            <MyChart campaignId={campaignId}/>
                         </Grid>
                         <Grid xs={3} md={3} lg={2} >
                             <Button color="gradient" onPress={generateCSV} size={'md'} >Generuj CSV</Button>
@@ -65,7 +74,7 @@ export default function CampaignDashboard() {
                             <Button color="gradient" size={'md'}  >Poinformuj</Button>
                         </Grid>
                         <Grid lg={4} xs={3} md={3} >
-                            <Button size={'md'} color="gradient" >Lista Kampanii</Button>
+                            <Button size={'md'} color="gradient" onPressEnd={showListOfCampaigns} >Lista Kampanii</Button>
                         </Grid>
                         <Grid lg={4} xs={3} md={3} css={{justifyContent:'right'}}>
                             <Button color="gradient" onPress={back}  size={'md'} >Powrót</Button>
@@ -75,7 +84,7 @@ export default function CampaignDashboard() {
 
 
                     </Grid.Container>
-                </Box>
+                {/*</Box>*/}
 
 
 

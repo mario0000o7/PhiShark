@@ -1,4 +1,4 @@
-import {Popover, Table, Text, useAsyncList} from '@nextui-org/react';
+import {Popover, Table, Text, useAsyncList,Container} from '@nextui-org/react';
 import Papa from 'papaparse';
 import React, {useEffect, useState} from 'react';
 function convertToCSV(data:any){
@@ -67,8 +67,16 @@ export default function MyTable({campaignId,generateCSV}:any){
             cursor: json.next,
         };
     }
+    useEffect(()=>{
+        list.reload();
+    },[campaignId]);
+
+
+
     const list = useAsyncList<MyTableProps>({ load });
     return(
+        // @ts-ignore
+        // <Container css={{padding:0,height:'100%',width:'100%'}}>
         <Table
             aria-label="Table with targets"
             shadow={false}
@@ -168,6 +176,7 @@ export default function MyTable({campaignId,generateCSV}:any){
                 )}
             </Table.Body>
         </Table>
+        // </Container>
     );
 
 }
