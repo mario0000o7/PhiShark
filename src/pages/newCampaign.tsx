@@ -24,6 +24,7 @@ export default function Home() {
         const [attachments, setAttachments] = useState("");
         const inputRef = useRef(null);
         const [selectedRows, setSelectedRows] = useState([]);
+        const [campaignName,setCampaignName] = useState("");
 
         function sendCampaign() {
             const selectedMails = mails.filter((mail, index) => selectedRows.has(index.toString()));
@@ -33,7 +34,7 @@ export default function Home() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({mailContent, mail, selectedMails, range, attachments, url}),
+                body: JSON.stringify({mailContent, mail, selectedMails, range, attachments, url, campaignName}),
             })
         }
 
@@ -174,8 +175,12 @@ export default function Home() {
                     </div>
                     <div style={{width:'100%'}}>
                         <form>
+                            <header style={{marginTop:'0'}} className={styles.header}>Nazwa kampanii:</header>
+                            <input style={{width: "100%",marginBottom:'0px'}} onChange={event => setCampaignName(event.target.value)}/>
+                        </form>
+                        <form>
                             <header style={{marginTop:'0'}} className={styles.header}>Treść maila:</header>
-                            <textarea value={mailContent} style={{width: "100%",borderRadius:'20px'}} rows="30"
+                            <textarea value={mailContent} style={{width: "100%"}} rows="28"
                                       onChange={event => setMailContent(event.target.value)}></textarea>
                         </form>
                         <Button color="gradient" css={{width:'100%'}} className={styles.button} onClick={sendCampaign}>Wyślij</Button>

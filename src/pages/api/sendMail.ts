@@ -46,8 +46,8 @@ export default async function handler(req: NextApiRequest,res: NextApiResponse) 
 
     try {
       conn = await pool.getConnection();
-      result = await conn.query("INSERT INTO kampanie (nazwa, zalacznik, url) VALUES (?, 'none', 'none')", [req.body.name]);
-      result = await conn.query("SELECT * FROM kampanie WHERE nazwa = ?", [req.body.name]);
+      result = await conn.query("INSERT INTO kampanie (nazwa, zalacznik, url) VALUES (?, 'none', 'none')", [req.body.campaignName]);
+      result = await conn.query("SELECT * FROM kampanie WHERE nazwa = ?", [req.body.campaignName]);
       campaignId = result[0].id;
     } finally {
       if (conn) await conn.end(); //release to pool
