@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '@/styles/Home.module.css'
 import MyNavbar from "@/components/MyNavbar";
-import {Grid, Button, Row, Col, Container, useModal} from "@nextui-org/react";
+import {Grid, Button, Row, Col, Container, useModal, Link} from "@nextui-org/react";
 import MyTable from "@/components/MyTable";
 import {Box} from "@/components/Box";
 import MyChart from "@/components/MyChart";
@@ -109,7 +109,7 @@ export default function CampaignDashboard() {
                             <Button size={'md'} color="gradient" onPressEnd={showListOfCampaigns} >Lista Kampanii</Button>
                         </Grid>
                         <Grid lg={4} xs={3} md={3} css={{justifyContent:'right'}}>
-                            {/*<Button color="gradient" onPress={back}  size={'md'} >Powrót</Button>*/}
+                            <Link href="/newCampaign"><Button color="gradient" onPress={back}  size={'md'} >Stwórz nową kampanię</Button></Link>
                         </Grid>
 
 
