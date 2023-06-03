@@ -180,7 +180,10 @@ export default function Home() {
                     <div style={{width:'100%'}}>
                         <form>
                             <header style={{marginTop:'0'}} className={styles.header}>Nazwa kampanii:</header>
-                            <input style={{width: "100%",marginBottom:'0px'}} onChange={event => setCampaignName(event.target.value)}/>
+                            <Input bordered={true}
+                                       placeholder={'Wpisz link url'}
+
+                                       css={{width: "100%",background:'#3B3B3B'}}  onChange={event => setCampaignName(event.target.value)}/>
                         </form>
                         <form>
                             <header style={{marginTop:'0'}} className={styles.header}>Treść maila:</header>
