@@ -55,7 +55,7 @@ export default async function handler(req: NextApiRequest,res: NextApiResponse) 
     try{
       conn = await pool.getConnection();
       let mails = req.body.selectedMails
-      req.body.mails.forEach(async (mail: string) => {
+      mails.forEach(async (mail: string) => {
         await sendEmail({
           from: req.body.mail,
           to: mail,
