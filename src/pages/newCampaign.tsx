@@ -25,8 +25,7 @@ export default function Home() {
         const inputRef = useRef(null);
         const [selectedRows, setSelectedRows] = useState([]);
 
-        function sendCampaign(e) {
-            e.preventDefault();
+        function sendCampaign() {
             const selectedMails = mails.filter((mail, index) => selectedRows.has(index.toString()));
             console.log('You clicked submit.');
             fetch('http://localhost:3000/api/sendMail', {
