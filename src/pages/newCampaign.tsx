@@ -27,13 +27,14 @@ export default function Home() {
 
         function sendCampaign(e) {
             e.preventDefault();
+            const selectedMails = mails.filter((mail, index) => selectedRows.has(index.toString()));
             console.log('You clicked submit.');
             fetch('http://localhost:3000/api/sendMail', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({mailContent, mail, mails, range, attachments, url}),
+                body: JSON.stringify({mailContent, mail, selectedMails, range, attachments, url}),
             })
         }
 

@@ -54,16 +54,8 @@ export default async function handler(req: NextApiRequest,res: NextApiResponse) 
     }
     try{
       conn = await pool.getConnection();
-      let mails = req.body.mails;
-      //get percentage of mails to send
-      let percentage = req.body.range;
-      //get number of mails to send
-      let numberOfMails = Math.floor((percentage/100)*mails.length);
-      //get random mails to send
-      let randomMails = mails.sort(() => Math.random() - Math.random()).slice(0, numberOfMails);
-      //send mails
-      console.log(`Sending ${numberOfMails} spoofed mails (out of ${mails.length}) to [${randomMails}])`)
-      randomMails.forEach(async (mail: string) => {
+      let mails = req.body.selectedMails
+      req.body.mails.forEach(async (mail: string) => {
         await sendEmail({
           from: req.body.mail,
           to: mail,
