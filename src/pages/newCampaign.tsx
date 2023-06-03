@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import MyNavbar from "@/components/MyNavbar";
 import React, {useState, useRef, useEffect} from "react";
-import { Table,Button } from '@nextui-org/react';
+import {Table, Button, Input, useAsyncList} from '@nextui-org/react';
 const { Configuration, OpenAIApi } = require("openai");
 import {SSRProvider} from 'react-aria';
 import {func} from "prop-types";
@@ -24,6 +24,11 @@ export default function Home() {
         const [attachments, setAttachments] = useState("");
         const inputRef = useRef(null);
         const [selectedRows, setSelectedRows] = useState([]);
+
+
+
+
+
 
         function sendCampaign(e) {
             e.preventDefault();
@@ -83,7 +88,7 @@ export default function Home() {
                 </Head>
                 <MyNavbar/>
                 <div className={styles.container}>
-                    <div>
+                    <div style={{width:'100%'}}>
                         <form>
                             <header style={{marginTop:'0'}} className={styles.header}>Adres email do podszycia:</header>
 
@@ -96,13 +101,20 @@ export default function Home() {
                                shadow={false}
                                lined
                                headerLined
+                                // onLoadMore={mails.length}
                                css={{
                                    width: "100%",
-                                   height: "100%",
+                                   height: "calc($space$14 * 14)",
+                                   // maxHeight: "calc($space$14 * 10)",
                                    padding: "0px",
                                    margin: "0px",
                                    background:'#3B4256',
                                }}
+                            containerCss={{
+                                width: "100%",
+                                maxHeight: "calc($space$14 * 14)",
+                            }}
+
 
                                selectionMode="multiple"
                                selectedKeys={selectedRows}
@@ -114,12 +126,18 @@ export default function Home() {
                             <Table.Body>
                                 {mails?.map((mail, i) => (
                                     <Table.Row key={i}>
-                                        <Table.Cell>{mail}</Table.Cell>
+                                        <Table.Cell css={{textAlign:'center',width:'100%'}}>{mail}</Table.Cell>
                                     </Table.Row>
                                 ))}
                             </Table.Body>
+                            <Table.Pagination
+                                shadow
+                                noMargin
+                                align="center"
+                                rowsPerPage={10}
+                            />
                         </Table>
-                        <input style={{width: "100%"}} ref={inputRef}/>
+                        <input style={{width: "100%",marginBottom:'10px'}} ref={inputRef}/>
                         <Button css={{width:'100%'}} className={styles.button} onClick={() => {
                             setMails([...mails, inputRef.current.value])
                             inputRef.current.value = "";
@@ -131,7 +149,7 @@ export default function Home() {
                         <input style={{width: "100%"}} type="range" min="0" max="100" value={range}
                                onChange={handleSliderChange}/>
                     </div>
-                    <div>
+                    <div style={{width:'100%'}}>
                         <form>
                             <header style={{marginTop:'0'}} className={styles.header}>Treść maila:</header>
                             <textarea value={mailContent} style={{width: "100%"}} rows="30"
@@ -139,7 +157,7 @@ export default function Home() {
                         </form>
                         <Button css={{width:'100%'}} className={styles.button} onClick={sendCampaign}>Wyślij</Button>
                     </div>
-                    <div>
+                    <div style={{width:'100%'}}>
                         <form>
                             <header style={{marginTop:'0'}} className={styles.header}>Link Url:</header>
                             <input style={{width: "100%"}} onChange={event => setUrl(event.target.value)}/>
