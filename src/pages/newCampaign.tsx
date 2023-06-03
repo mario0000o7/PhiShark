@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import MyNavbar from "@/components/MyNavbar";
 import React, {useState, useRef, useEffect} from "react";
-import { Table,Button } from '@nextui-org/react';
+import {Table, Button, Textarea,Input,Text} from '@nextui-org/react';
 const { Configuration, OpenAIApi } = require("openai");
 import {SSRProvider} from 'react-aria';
 import {func} from "prop-types";
@@ -105,11 +105,14 @@ export default function Home() {
                         <form>
                             <header style={{marginTop:'0'}} className={styles.header}>Adres email do podszycia:</header>
 
-                            <input style={{width: "100%",marginBottom:'0px'}} onChange={event => setMail(event.target.value)}/>
+                            <Input  bordered={true}
+                                    placeholder={'Wpisz adres email do podszycia'}
+
+                                    css={{width: "100%",background:'#3B3B3B'}} onChange={event => setMail(event.target.value)}/>
                         </form>
                         <header style={{marginBottom:'5px'}} className={styles.header} >Adresy email:</header>
                         <Table
-                            style={{margin:'0px',padding:'0px',borderRadius:'20px',marginBottom:'10px'}}
+                            style={{margin:'0px',padding:'0px',borderRadius:'20px',marginBottom:'0px'}}
                                aria-label="Example static collection table with multiple selection"
                                shadow={false}
                                lined
@@ -150,8 +153,12 @@ export default function Home() {
                                 rowsPerPage={10}
                             />
                         </Table>
-                        <input style={{width: "100%",marginBottom:'10px'}} ref={inputRef}/>
-                        <Button css={{width:'100%'}} className={styles.button} onClick={() => {
+                        <Input
+                            bordered={true}
+                            placeholder={'Wpisz adres email'}
+
+                            css={{width: "100%",marginBottom:'10px',background:'#3B3B3B'}} ref={inputRef}/>
+                        <Button color="gradient" css={{width:'100%'}} className={styles.button} onClick={() => {
                             if(inputRef.current.value === "") return;
                             if(inputRef.current.value.includes("@") === false) return;
                             setMails([...mails, inputRef.current.value])
@@ -160,7 +167,7 @@ export default function Home() {
                         </Button>
 
                         <input type="file" accept=".csv" style={{ display: 'none' }} ref={fileInputRef} onChange={handleSelectFile} />
-                        <Button css={{width:'100%'}} className={styles.button} onPress={handleSelectFileClick}>Załaduj adresy email z pliku</Button>
+                        <Button color="gradient" css={{width:'100%'}} className={styles.button} onPress={handleSelectFileClick}>Załaduj adresy email z pliku</Button>
                         <h3 className={styles.header}>Przedział wysłania mailów</h3>
                         <input style={{width: "100%"}} type="range" min="0" max="100" value={range}
                                onChange={handleSliderChange}/>
@@ -168,20 +175,23 @@ export default function Home() {
                     <div style={{width:'100%'}}>
                         <form>
                             <header style={{marginTop:'0'}} className={styles.header}>Treść maila:</header>
-                            <textarea value={mailContent} style={{width: "100%"}} rows="30"
+                            <textarea value={mailContent} style={{width: "100%",borderRadius:'20px'}} rows="30"
                                       onChange={event => setMailContent(event.target.value)}></textarea>
                         </form>
-                        <Button css={{width:'100%'}} className={styles.button} onClick={sendCampaign}>Wyślij</Button>
+                        <Button color="gradient" css={{width:'100%'}} className={styles.button} onClick={sendCampaign}>Wyślij</Button>
                     </div>
                     <div style={{width:'100%'}}>
                         <form>
                             <header style={{marginTop:'0'}} className={styles.header}>Link Url:</header>
-                            <input style={{width: "100%"}} onChange={event => setUrl(event.target.value)}/>
+                            <Input bordered={true}
+                                       placeholder={'Wpisz link url'}
+
+                                       css={{width: "100%",background:'#3B3B3B'}}  onChange={event => setUrl(event.target.value)}/>
                         </form>
                         <form onSubmit={generateAiResponse}>
                             <header className={styles.header}>Zapytanie do AI:</header>
-                            <textarea style={{width: "100%"} } onChange={event => setAiRequest(event.target.value)} rows="20"></textarea>
-                            <Button css={{width:'100%'}} className={styles.button} type="submit">Generuj</Button>
+                            <textarea style={{width: "100%",borderRadius:'20px'} } onChange={event => setAiRequest(event.target.value)} rows="20"></textarea>
+                            <Button color="gradient" css={{width:'100%'}} className={styles.button} type="submit">Generuj</Button>
 
                         </form>
                         <form>
