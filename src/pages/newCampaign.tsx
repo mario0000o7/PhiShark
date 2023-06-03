@@ -139,6 +139,8 @@ export default function Home() {
                         </Table>
                         <input style={{width: "100%"}} ref={inputRef}/>
                         <Button css={{width:'100%'}} className={styles.button} onClick={() => {
+                            if(inputRef.current.value === "") return;
+                            if(inputRef.current.value.includes("@") === false) return;
                             setMails([...mails, inputRef.current.value])
                             inputRef.current.value = "";
                         }}>Dodaj adresy mail
