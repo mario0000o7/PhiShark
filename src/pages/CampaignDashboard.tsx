@@ -109,7 +109,7 @@ export default function CampaignDashboard() {
                             <Button size={'md'} color="gradient" onPressEnd={showListOfCampaigns} >Lista Kampanii</Button>
                         </Grid>
                         <Grid lg={4} xs={3} md={3} css={{justifyContent:'right'}}>
-                            <Link href="/newCampaign"><Button color="gradient" onPress={back}  size={'md'} >Stwórz nową kampanię</Button></Link>
+                            <Link href="/newCampaign"><Button color="gradient" size={'md'} >Stwórz nową kampanię</Button></Link>
                         </Grid>
 
 
