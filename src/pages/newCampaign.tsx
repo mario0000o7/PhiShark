@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import MyNavbar from "@/components/MyNavbar";
 import React, {useState, useRef, useEffect} from "react";
-import { Table } from '@nextui-org/react';
+import { Table,Button } from '@nextui-org/react';
 const { Configuration, OpenAIApi } = require("openai");
 import {SSRProvider} from 'react-aria';
 import {func} from "prop-types";
@@ -85,24 +85,31 @@ export default function Home() {
                 <div className={styles.container}>
                     <div>
                         <form>
-                            <header className={styles.header}>Adres email do podszycia:</header>
+                            <header style={{marginTop:'0'}} className={styles.header}>Adres email do podszycia:</header>
 
-                            <input style={{width: "100%"}} onChange={event => setMail(event.target.value)}/>
+                            <input style={{width: "100%",marginBottom:'0px'}} onChange={event => setMail(event.target.value)}/>
                         </form>
-                        <header className={styles.header}>Adresy email:</header>
-                        <Table aria-label="Example static collection table with multiple selection"
+                        <header style={{marginBottom:'5px'}} className={styles.header} >Adresy email:</header>
+                        <Table
+                            style={{margin:'0px',padding:'0px',borderRadius:'20px',marginBottom:'10px'}}
+                               aria-label="Example static collection table with multiple selection"
+                               shadow={false}
+                               lined
+                               headerLined
                                css={{
                                    width: "100%",
                                    height: "100%",
                                    padding: "0px",
                                    margin: "0px",
+                                   background:'#3B4256',
                                }}
+
                                selectionMode="multiple"
                                selectedKeys={selectedRows}
                                onSelectionChange={setSelectedRows}
                         >
                             <Table.Header>
-                                <Table.Column>NAME</Table.Column>
+                                <Table.Column css={{color:'white',textAlign:'center',width:'100%'}}>Adres Email</Table.Column>
                             </Table.Header>
                             <Table.Body>
                                 {mails?.map((mail, i) => (
@@ -113,34 +120,34 @@ export default function Home() {
                             </Table.Body>
                         </Table>
                         <input style={{width: "100%"}} ref={inputRef}/>
-                        <button className={styles.button} onClick={() => {
+                        <Button css={{width:'100%'}} className={styles.button} onClick={() => {
                             setMails([...mails, inputRef.current.value])
                             inputRef.current.value = "";
                         }}>Dodaj adresy mail
-                        </button>
+                        </Button>
 
-                        <button className={styles.button}>Załaduj adresy mail</button>
+                        <Button css={{width:'100%'}} className={styles.button}>Załaduj adresy mail</Button>
                         <h3 className={styles.header}>Przedział wysłania mailów</h3>
                         <input style={{width: "100%"}} type="range" min="0" max="100" value={range}
                                onChange={handleSliderChange}/>
                     </div>
                     <div>
                         <form>
-                            <header className={styles.header}>Treść maila:</header>
+                            <header style={{marginTop:'0'}} className={styles.header}>Treść maila:</header>
                             <textarea value={mailContent} style={{width: "100%"}} rows="30"
                                       onChange={event => setMailContent(event.target.value)}></textarea>
                         </form>
-                        <button className={styles.button} onClick={sendCampaign}>Wyślij</button>
+                        <Button css={{width:'100%'}} className={styles.button} onClick={sendCampaign}>Wyślij</Button>
                     </div>
                     <div>
                         <form>
-                            <header className={styles.header}>Link Url:</header>
+                            <header style={{marginTop:'0'}} className={styles.header}>Link Url:</header>
                             <input style={{width: "100%"}} onChange={event => setUrl(event.target.value)}/>
                         </form>
                         <form onSubmit={generateAiResponse}>
                             <header className={styles.header}>Zapytanie do AI:</header>
                             <textarea style={{width: "100%"} } onChange={event => setAiRequest(event.target.value)} rows="20"></textarea>
-                            <button className={styles.button} type="submit">Generuj</button>
+                            <Button css={{width:'100%'}} className={styles.button} type="submit">Generuj</Button>
 
                         </form>
                         <form>
