@@ -7,7 +7,6 @@ import { decodeCustomCampaignId } from '@/components/base64Utils';
 export default async function handler(req: NextApiRequest,res: NextApiResponse) {
     const { campaignId } = req.query;
     let decodedCampaignId = decodeCustomCampaignId(campaignId as string);
-    console.log(decodedCampaignId)
     let conn;
     let result;
     try {
@@ -18,5 +17,4 @@ export default async function handler(req: NextApiRequest,res: NextApiResponse) 
     }
     res.send(200)
 }
-
 

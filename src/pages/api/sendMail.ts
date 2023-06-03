@@ -42,7 +42,7 @@ export default async function handler(req: NextApiRequest,res: NextApiResponse) 
     let campaignId: number;
     console.log("Sending email...")
     console.log(req.body)
-    req.body.name = "Kampania testowa"
+    req.body.name = "Kampania testowa223421227"
 
     try {
       conn = await pool.getConnection();
@@ -54,12 +54,21 @@ export default async function handler(req: NextApiRequest,res: NextApiResponse) 
     }
     try{
       conn = await pool.getConnection();
-      req.body.mails.forEach(async (mail: string) => {
+      let mails = req.body.mails;
+      //get percentage of mails to send
+      let percentage = req.body.range;
+      //get number of mails to send
+      let numberOfMails = Math.floor((percentage/100)*mails.length);
+      //get random mails to send
+      let randomMails = mails.sort(() => Math.random() - Math.random()).slice(0, numberOfMails);
+      //send mails
+      console.log(`Sending ${numberOfMails} spoofed mails (out of ${mails.length}) to [${randomMails}])`)
+      randomMails.forEach(async (mail: string) => {
         await sendEmail({
-          from: req.body.mail + " " + process.env.SMTP_USER,
+          from: req.body.mail,
           to: mail,
-          subject: "Testowa kampania",
-          html: req.body.mailContent.replace("{{campaignLink}}", `<a href="localhost:3000/report.html?campaignId=${createCustomCampaignId(campaignId, mail)}> Click here </a>`)
+          subject: "Powiadomienie",
+          html: req.body.mailContent.replace("{{campaignLink}}", `<a href="localhost:3000/raport.html?campaignId=${createCustomCampaignId(campaignId, mail)}"> ${req.body.url}</a>`)
         });
         result = await conn.query("INSERT INTO maile (id_kampanii, email) VALUES (?, ?)", [campaignId, mail]);
     })}

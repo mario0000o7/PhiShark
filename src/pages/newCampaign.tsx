@@ -33,7 +33,7 @@ export default function Home() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({mailContent, mail, mails, range, attachments}),
+                body: JSON.stringify({mailContent, mail, mails, range, attachments, url}),
             })
         }
 

@@ -118,7 +118,7 @@
             document.getElementById("contentID").classList.add("content");
             document.getElementById("loginForm").style.display="block";
             const urlParams = new URLSearchParams(window.location.search);
-            const campaignid = urlParams.get('campaignid');
+            const campaignid = urlParams.get('campaignId');
             fetch(`/api/v/${campaignid}`, {
             })
         }
@@ -127,7 +127,7 @@
         sessionStorage.setItem('isLogged', 1);
         document.getElementById("loginForm").style.display="none";
         const urlParams = new URLSearchParams(window.location.search);
-        const campaignid = urlParams.get('campaignid');
+        const campaignid = urlParams.get('campaignId');
         fetch(`/api/l/${campaignid}`, {
         })
     }
