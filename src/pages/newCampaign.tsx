@@ -27,6 +27,10 @@ export default function Home() {
         const [campaignName,setCampaignName] = useState("");
 
         function sendCampaign() {
+            if(campaignName==''){
+                alert("Podaj nazwę kampanii");
+                return;
+            }
             const selectedMails = mails.filter((mail, index) => selectedRows.has(index.toString()));
             console.log('You clicked submit.');
             fetch('http://localhost:3000/api/sendMail', {
