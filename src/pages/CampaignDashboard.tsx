@@ -1,14 +1,11 @@
 import Head from 'next/head'
-import Image from 'next/image'
-import styles from '@/styles/Home.module.css'
 import MyNavbar from "@/components/MyNavbar";
-import {Grid, Button, Row, Col, Container, useModal, Link} from "@nextui-org/react";
+import {Button, Grid, useModal} from "@nextui-org/react";
 import MyTable from "@/components/MyTable";
 import {Box} from "@/components/Box";
 import MyChart from "@/components/MyChart";
-import {useState,useEffect, SetStateAction} from "react";
+import {useEffect, useState} from "react";
 import ModalListOfCampaign from "@/components/ModalListOfCampaign";
-
 
 
 export default function CampaignDashboard() {
@@ -21,11 +18,12 @@ export default function CampaignDashboard() {
         setSelectedItems(items);
     }
 
+    useEffect(() => {
+        showListOfCampaigns();
+    }, []);
+
     // @ts-ignore
     const { setVisible, bindings } = useModal();
-    function back(){
-        window.location.href = '/';
-    }
     function generateCSV(){
         console.log(csvData);
         setCsvData([])
@@ -106,7 +104,7 @@ export default function CampaignDashboard() {
                             <Button color="gradient" size={'md'} onPress={sendWarning} >Poinformuj</Button>
                         </Grid>
                         <Grid lg={4} xs={3} md={3} >
-                            <Button size={'md'} color="gradient" onPressEnd={showListOfCampaigns} >Lista Kampanii</Button>
+                            <Button size={'md'} color="gradient" onPressEnd={showListOfCampaigns} >Wybór Kampanii</Button>
                         </Grid>
                         <Grid lg={4} xs={3} md={3} css={{justifyContent:'right'}}>
                             {/*<Link href="/newCampaign"><Button color="gradient" size={'md'} >Stwórz nową kampanię</Button></Link>*/}

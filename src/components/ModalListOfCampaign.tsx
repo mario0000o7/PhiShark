@@ -1,5 +1,4 @@
-import {useEffect,useState} from "react";
-import {Modal, useModal, Button, Text, Table, useAsyncList} from "@nextui-org/react";
+import {Modal, Button, Text, Table, useAsyncList} from "@nextui-org/react";
 import {IconButton} from "@/components/IconButton";
 import {EyeIcon} from "@/components/EyeIcon";
 
@@ -39,7 +38,7 @@ export default function ModalListOfCampaign({bindings,setVisible,setCampaignId,s
             {...bindings}>
             <Modal.Header>
 
-                <Text>Lista Kampanii</Text>
+                <Text>Wybór Kampanii</Text>
             </Modal.Header>
             <Modal.Body>
                 <Table
