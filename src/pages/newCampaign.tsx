@@ -2,10 +2,11 @@ import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import MyNavbar from "@/components/MyNavbar";
-import React, {useState, useRef} from "react";
+import React, {useState, useRef, useEffect} from "react";
 import { Table } from '@nextui-org/react';
 const { Configuration, OpenAIApi } = require("openai");
 import {SSRProvider} from 'react-aria';
+import {func} from "prop-types";
 
 export default function Home() {
 
@@ -16,12 +17,13 @@ export default function Home() {
         const openai = new OpenAIApi(configuration);
         const [mailContent, setMailContent] = useState("");
         const [mail, setMail] = useState("");
-        const [range, setRange] = useState("");
+        const [range, setRange] = useState(100);
         const [mails, setMails] = useState([]);
         const [url, setUrl] = useState("");
         const [aiRequest, setAiRequest] = useState("");
         const [attachments, setAttachments] = useState("");
         const inputRef = useRef(null);
+        const [selectedRows, setSelectedRows] = useState([]);
 
         function sendCampaign(e) {
             e.preventDefault();
@@ -48,7 +50,29 @@ export default function Home() {
         setMailContent(data.result);
     }
 
-        return (
+    const selectRandomRows = () => {
+        const totalRows = mails.length;
+        const selectedRowCount = Math.round((range / 100) * totalRows);
+        const randomRows = [];
+
+        while (randomRows.length < selectedRowCount) {
+            const randomIndex = Math.floor(Math.random() * totalRows);
+            if (!randomRows.includes(randomIndex)) {
+                randomRows.push(randomIndex.toString());
+            }
+        }
+        setSelectedRows(randomRows);
+    };
+
+    const handleSliderChange = (event) => {
+        console.log(event.target.value+"%");
+        const value = parseInt(event.target.value);
+        setRange(value);
+        selectRandomRows();
+        console.log(selectedRows);
+    };
+
+    return (
             <SSRProvider>
             <>
                 <Head>
@@ -74,6 +98,8 @@ export default function Home() {
                                    margin: "0px",
                                }}
                                selectionMode="multiple"
+                               selectedKeys={selectedRows}
+                               onSelectionChange={setSelectedRows}
                         >
                             <Table.Header>
                                 <Table.Column>NAME</Table.Column>
@@ -95,7 +121,8 @@ export default function Home() {
 
                         <button className={styles.button}>Załaduj adresy mail</button>
                         <h3 className={styles.header}>Przedział wysłania mailów</h3>
-                        <input style={{width: "100%"}} type="range" min="0" max="100"/>
+                        <input style={{width: "100%"}} type="range" min="0" max="100" value={range}
+                               onChange={handleSliderChange}/>
                     </div>
                     <div>
                         <form>
