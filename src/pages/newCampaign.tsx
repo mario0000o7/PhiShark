@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import MyNavbar from "@/components/MyNavbar";
 import React, {useState, useRef, useEffect} from "react";
-import {Table, Button, Input, useAsyncList} from '@nextui-org/react';
+import { Table,Button } from '@nextui-org/react';
 const { Configuration, OpenAIApi } = require("openai");
 import {SSRProvider} from 'react-aria';
 import {func} from "prop-types";
@@ -25,20 +25,15 @@ export default function Home() {
         const inputRef = useRef(null);
         const [selectedRows, setSelectedRows] = useState([]);
 
-
-
-
-
-
-        function sendCampaign(e) {
-            e.preventDefault();
+        function sendCampaign() {
+            const selectedMails = mails.filter((mail, index) => selectedRows.has(index.toString()));
             console.log('You clicked submit.');
             fetch('http://localhost:3000/api/sendMail', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({mailContent, mail, mails, range, attachments, url}),
+                body: JSON.stringify({mailContent, mail, selectedMails, range, attachments, url}),
             })
         }
 
@@ -76,6 +71,24 @@ export default function Home() {
         selectRandomRows();
         console.log(selectedRows);
     };
+
+    const fileInputRef = useRef(null);
+    const handleSelectFileClick = () => {
+      fileInputRef.current.click();
+    };
+
+    const handleSelectFile = (event) => {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const contents = e.target.result;
+          const lines = contents.split('\n');
+          const emails = lines.map((line) => line.trim()).filter((line) => line.includes('@'));
+          setMails(emails);
+          console.log('Załadowane maile:', emails);
+        };
+        reader.readAsText(file);
+      };
 
     return (
             <SSRProvider>
@@ -139,12 +152,15 @@ export default function Home() {
                         </Table>
                         <input style={{width: "100%",marginBottom:'10px'}} ref={inputRef}/>
                         <Button css={{width:'100%'}} className={styles.button} onClick={() => {
+                            if(inputRef.current.value === "") return;
+                            if(inputRef.current.value.includes("@") === false) return;
                             setMails([...mails, inputRef.current.value])
                             inputRef.current.value = "";
                         }}>Dodaj adresy mail
                         </Button>
 
-                        <Button css={{width:'100%'}} className={styles.button}>Załaduj adresy mail</Button>
+                        <input type="file" accept=".csv" style={{ display: 'none' }} ref={fileInputRef} onChange={handleSelectFile} />
+                        <Button css={{width:'100%'}} className={styles.button} onPress={handleSelectFileClick}>Załaduj adresy email z pliku</Button>
                         <h3 className={styles.header}>Przedział wysłania mailów</h3>
                         <input style={{width: "100%"}} type="range" min="0" max="100" value={range}
                                onChange={handleSliderChange}/>
