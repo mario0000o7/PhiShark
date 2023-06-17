@@ -83,53 +83,62 @@ const options = {
     },
 };
 export default function MyChart({campaignId}:any) {
+    console.log(campaignId);
     const [dataState,setDataState]=useState(dataTmp2);
     const [optionsState,setOptionsState]=useState(options);
-    useEffect(() => {
+
+    function refreshChart(){
         fetch(('http://localhost:3000/api/campaignDetails/'+campaignId))
             .then(response => response.json())
             .then(data => {
-                let newDataSets= [0,0,0,0]
-                for (let i = 0; i < data.length; i++) {
-                    if(data[i].skradzione_dane){
-                        newDataSets[3]++;
+                    let newDataSets= [0,0,0,0]
+                    for (let i = 0; i < data.length; i++) {
+                        if(data[i].skradzione_dane){
+                            newDataSets[3]++;
+                        }
+                        else if(data[i].url){
+                            newDataSets[1]++;
+                        }
+                        else if(data[i].zalacznik){
+                            newDataSets[2]++;
+                        }
+                        else{
+                            newDataSets[0]++;
+                        }
+                    }
+                    const newData ={
+                        labels: labels,
+                        datasets: [
+                            {
+                                data: newDataSets,
+                                backgroundColor: [
+                                    'rgba(0,255,12,0.87)',
+                                    '#F3BB2C',
+                                    '#E8AA5E',
+                                    'rgba(255,0,0,0.92)',
+
+                                ],
+
+                                borderWidth: 1
+                            },
+                        ],
+                    }
+                    options.plugins.subtitle.text=data.length;
+                    setDataState(newData);
+
                 }
-                    else if(data[i].url){
-                        newDataSets[1]++;
-                    }
-                    else if(data[i].zalacznik){
-                        newDataSets[2]++;
-                    }
-                    else{
-                        newDataSets[0]++;
-                    }
-            }
-                const newData ={
-                    labels: labels,
-                    datasets: [
-                        {
-                            data: newDataSets,
-                            backgroundColor: [
-                                'rgba(0,255,12,0.87)',
-                                '#F3BB2C',
-                                '#E8AA5E',
-                                'rgba(255,0,0,0.92)',
-
-                            ],
-
-                            borderWidth: 1
-                        },
-                    ],
-                }
-                options.plugins.subtitle.text=data.length;
-                setDataState(newData);
-
-            }
-                ).catch((error) => {
+            ).catch((error) => {
             console.error('Error:', error);
         });
+    }
+    // refreshChart();
 
-    }, [campaignId])
+
+    useEffect(() => {
+       refreshChart()
+
+    }, [campaignId, refreshChart])
+
 
 
     return (

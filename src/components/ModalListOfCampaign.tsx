@@ -1,6 +1,9 @@
 import {Modal, Button, Text, Table, useAsyncList} from "@nextui-org/react";
 import {IconButton} from "@/components/IconButton";
 import {EyeIcon} from "@/components/EyeIcon";
+// @ts-ignore
+import Cookies from 'js-cookie';
+
 
 
 export default function ModalListOfCampaign({bindings,setVisible,setCampaignId,setNameofCampaign}:any) {
@@ -12,8 +15,7 @@ export default function ModalListOfCampaign({bindings,setVisible,setCampaignId,s
             { signal }
         );
         const json = await res.json();
-        console.log(json);
-        console.log(json);
+
         return {
             items: json,
             cursor: json.next,
@@ -25,6 +27,7 @@ export default function ModalListOfCampaign({bindings,setVisible,setCampaignId,s
         setCampaignId(id)
         setVisible(false)
         setNameofCampaign(name)
+        Cookies.set('campaignId',id.toString())
     }
 
 

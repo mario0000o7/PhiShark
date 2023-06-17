@@ -2,7 +2,15 @@ import { Navbar, Button, Link, Text } from "@nextui-org/react";
 import { Layout } from "./Layout.js";
 import Image from "next/image";
 import React from "react";
+// @ts-ignore
+import Cookies from 'js-cookie';
+
 export default function MyNavbar({title}:any) {
+
+    function clearCampaignId(){
+        Cookies.remove('campaignId')
+    }
+
     return (
         <Navbar  isBordered variant="static" maxWidth={'fluid'} css={{background:'#161C2E'}}>
             <Navbar.Brand>
@@ -14,7 +22,7 @@ export default function MyNavbar({title}:any) {
                     <Link href="/newCampaign"><Button color="gradient" auto>Stwórz nową kampanię</Button></Link>
                 </Navbar.Item>
                 <Navbar.Item>
-                    <Link href="/CampaignDashboard"><Button color="gradient" auto>Lista kampanii</Button></Link>
+                    <Link href="/CampaignDashboard"><Button onPressEnd={clearCampaignId} color="gradient" auto>Lista kampanii</Button></Link>
                 </Navbar.Item>
                 <Text  size={50} style={{textAlign: 'center'}}>
                     {title}

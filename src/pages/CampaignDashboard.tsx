@@ -6,6 +6,10 @@ import {Box} from "@/components/Box";
 import MyChart from "@/components/MyChart";
 import {useEffect, useState} from "react";
 import ModalListOfCampaign from "@/components/ModalListOfCampaign";
+// @ts-ignore
+import Cookies from 'js-cookie';
+
+
 
 
 export default function CampaignDashboard() {
@@ -14,12 +18,18 @@ export default function CampaignDashboard() {
     const [nameOfCampaign,setNameOfCampaign] = useState('')
     const [selectedItems, setSelectedItems] = useState([]);
 
+
     function handleSelectedItems(items: any) {
         setSelectedItems(items);
     }
 
     useEffect(() => {
-        showListOfCampaigns();
+        if(Cookies.get('campaignId')!=undefined) {
+            setCampaignId(parseInt(Cookies.get('campaignId')))
+            setVisible(false)
+        }
+        else
+            showListOfCampaigns();
     }, []);
 
     // @ts-ignore
@@ -31,6 +41,7 @@ export default function CampaignDashboard() {
     function showListOfCampaigns(){
         setVisible(true)
     }
+
     function sendWarning(){
         let selectedItemsArray:any=[];
         let csvData:any=[];
