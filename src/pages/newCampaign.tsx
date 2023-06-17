@@ -43,7 +43,13 @@ export default function Home() {
                 alert("Wybierz odbiorców");
                 return;
             }
-            const selectedMails = mails.filter((mail, index) => selectedRows.has(index.toString()));
+            let selectedMails 
+            if(selectedRows === 'all'){
+                selectedMails = mails
+            } else {
+                selectedMails = mails.filter((mail, index) => selectedRows.has(index.toString()));
+            }
+            console.log(selectedMails)
             console.log('You clicked submit.');
             fetch('/api/sendMail', {
                 method: 'POST',
@@ -162,10 +168,10 @@ export default function Home() {
                                    margin: "0px",
                                    background:'#3B4256',
                                }}
-                            containerCss={{
-                                width: "100%",
-                                maxHeight: "calc($space$14 * 14)",
-                            }}
+                                containerCss={{
+                                    width: "100%",
+                                    maxHeight: "calc($space$14 * 14)",
+                                }}
 
 
                                selectionMode="multiple"
