@@ -7,9 +7,16 @@ import {Table, Button, Textarea,Input,Text} from '@nextui-org/react';
 const { Configuration, OpenAIApi } = require("openai");
 import {SSRProvider} from 'react-aria';
 import {func} from "prop-types";
+import MyModal from "@/components/MyModal";
 
 export default function Home() {
-
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const handleOpenModal = () => {
+      setIsModalOpen(true);
+    };
+    const handleCloseModal = () => {
+      setIsModalOpen(false);
+    };
         const configuration = new Configuration({
             apiKey: process.env.OPENAI_API_KEY,
         });
@@ -107,6 +114,23 @@ export default function Home() {
                     <link rel="icon" href="/favicon.ico"/>
                 </Head>
                 <MyNavbar/>
+                <MyModal isOpen={isModalOpen} onRequestClose={handleCloseModal}>
+                    <div className={styles.container} onClick={handleCloseModal}>
+                        <div style={{width:'100%'}}>
+                            <h3 style={{ paddingLeft: "20px", paddingBottom: "120px"}}>Wpisz adres email, który zamierzasz użyć do podszycia się</h3>
+                            <h3 style={{paddingTop: "100px", paddingLeft: "20px"}}>Wpisz adres email, który chcesz dodać do listy</h3>
+                        </div>
+                        <div style={{width:'100%'}}>
+                                <h3 style={{paddingLeft: "20px", paddingBottom: "120px"}}>Podaj nazwę kampanii, aby móc ją potem łatwo odszukać</h3>
+                                <h3 style={{paddingTop: "100px", paddingLeft: "20px"}}>Wpisz treść maila, który chcesz wysłać w ramach kampanii</h3>
+                        </div>
+                        <div style={{width:'100%'}}>
+                                <h3 style={{paddingLeft: "20px", paddingBottom: "120px"}}>Podaj link url, który chcesz przesłać w wiadomości</h3>
+                                <h3 style={{paddingTop: "100px", paddingLeft: "20px"}}>Wpisz zapytanie, które chcesz przesłać do AI, aby szybciej napisać maila</h3>
+                        </div>
+
+                    </div>
+                </MyModal>
                 <div className={styles.container}>
                     <div style={{width:'100%'}}>
                         <form>
@@ -201,6 +225,8 @@ export default function Home() {
                                        placeholder={'Wpisz link url'}
 
                                        css={{width: "100%",background:'#3B3B3B'}}  onChange={event => setUrl(event.target.value)}/>
+                            <Button color="gradient" css={{width:'100%'}} className={styles.button} onClick={handleOpenModal}>Pomoc
+                            </Button>           
                         </form>
                         <form onSubmit={generateAiResponse}>
                             <header className={styles.header}>Zapytanie do AI:</header>
