@@ -33,7 +33,7 @@ export default function Home() {
             }
             const selectedMails = mails.filter((mail, index) => selectedRows.has(index.toString()));
             console.log('You clicked submit.');
-            fetch('http://localhost:3000/api/sendMail', {
+            fetch('/api/sendMail', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -35,7 +35,7 @@ export default function MyTable({campaignId,generateCSV, onSelectItems}:any){
             (selectedItems as any).forEach((value:any, key:any) => {
                 selectedItemsArray.push(parseInt(key));
             });
-        fetch(('http://localhost:3000/api/campaignDetails/'+campaignId))
+        fetch(('/api/campaignDetails/'+campaignId))
             .then(response => response.json())
             .then(data => {
                 let csvData:any=[];
@@ -57,7 +57,7 @@ export default function MyTable({campaignId,generateCSV, onSelectItems}:any){
         // If no cursor is available, then we're loading the first page.
         // Otherwise, the cursor is the next URL to load, as returned from the previous page.
         const res = await fetch(
-            cursor || ("http://localhost:3000/api/campaignDetails/"+campaignId),
+            cursor || ("/api/campaignDetails/"+campaignId),
             { signal }
         );
         const json = await res.json();

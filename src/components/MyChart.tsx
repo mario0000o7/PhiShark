@@ -88,7 +88,7 @@ export default function MyChart({campaignId}:any) {
     const [optionsState,setOptionsState]=useState(options);
 
     function refreshChart(){
-        fetch(('http://localhost:3000/api/campaignDetails/'+campaignId))
+        fetch(('/api/campaignDetails/'+campaignId))
             .then(response => response.json())
             .then(data => {
                     let newDataSets= [0,0,0,0]

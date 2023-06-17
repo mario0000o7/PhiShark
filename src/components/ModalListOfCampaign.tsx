@@ -11,7 +11,7 @@ export default function ModalListOfCampaign({bindings,setVisible,setCampaignId,s
         // If no cursor is available, then we're loading the first page.
         // Otherwise, the cursor is the next URL to load, as returned from the previous page.
         const res = await fetch(
-            cursor || ("http://localhost:3000/api/getCampaignListWithCountsOfMails"),
+            cursor || ("/api/getCampaignListWithCountsOfMails"),
             { signal }
         );
         const json = await res.json();

@@ -50,7 +50,7 @@ export default function CampaignDashboard() {
             (selectedItems as any).forEach((value:any, key:any) => {
                 selectedItemsArray.push(parseInt(key));
             });
-        fetch(('http://localhost:3000/api/campaignDetails/'+campaignId))
+        fetch(('/api/campaignDetails/'+campaignId))
         .then(response => response.json())
         .then(data => {
             for(let i=0;i<data.length;i++){
@@ -59,7 +59,7 @@ export default function CampaignDashboard() {
                     csvData.push(data[i]);
                 }
             }
-            fetch(('http://localhost:3000/api/sendWarning/'), {
+            fetch(('/api/sendWarning/'), {
                 method: 'POST',
                 headers : { 'Content-Type': 'application/json' },
                 body: JSON.stringify(csvData)

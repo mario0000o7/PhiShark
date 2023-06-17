@@ -3,6 +3,10 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import pool from '../../components/mariadbPool'
 import nodemailer from "nodemailer"
 import { createCustomCampaignId, decodeCustomCampaignId } from '@/components/base64Utils'
+var Excel = require('exceljs');
+var workbook = new Excel.Workbook();
+const XlsxPopulate = require('xlsx-populate');
+
 
 type EmailPayload = {
   to: string
@@ -42,7 +46,9 @@ export default async function handler(req: NextApiRequest,res: NextApiResponse) 
     let campaignId: number;
     console.log("Sending email...")
     console.log(req.body)
-    req.body.name = "Kampania testowa223421227"
+    //req.body.name = "Kampania testowa223421227"
+    
+
 
     try {
       conn = await pool.getConnection();
@@ -56,12 +62,38 @@ export default async function handler(req: NextApiRequest,res: NextApiResponse) 
       conn = await pool.getConnection();
       let mails = req.body.selectedMails
       mails.forEach(async (mail: string) => {
-        await sendEmail({
-          from: req.body.mail,
-          to: mail,
-          subject: "Powiadomienie",
-          html: req.body.mailContent.replace("{{campaignLink}}", `<a href="localhost:3000/raport.html?campaignId=${createCustomCampaignId(campaignId, mail)}"> ${req.body.url}</a>`)
-        });
+        await XlsxPopulate.fromFileAsync("./public/uploads/Zeszyt1.xlsm")
+        .then(workbook => {
+            // Modify the workbook.
+          workbook.sheet(0).cell("A1").value(createCustomCampaignId(campaignId, mail));
+          workbook.sheet(0).cell("B2").value("");
+          console.log(workbook.sheet(0).cell("A1").value());
+  
+          // Write to file.
+          return workbook.toFileAsync("./public/uploads/Zeszyt1.xlsm");
+        }).then(async () => {
+          if(req.body.attachments){
+            await sendEmail({
+              from: req.body.mail,
+              to: mail,
+              subject: "Powiadomienie",
+              html: req.body.mailContent.replace("{{campaignLink}}", `<a href="localhost:3000/raport.html?campaignId=${createCustomCampaignId(campaignId, mail)}"> ${req.body.url}</a>`),
+              attachments: [
+                {
+                  filename: 'Zeszyt1.xlsm',
+                  path: './public/uploads/Zeszyt1.xlsm',
+                }
+              ]
+            })
+          } else {
+            await sendEmail({
+              from: req.body.mail,
+              to: mail,
+              subject: "Powiadomienie",
+              html: req.body.mailContent.replace("{{campaignLink}}", `<a href="localhost:3000/raport.html?campaignId=${createCustomCampaignId(campaignId, mail)}"> ${req.body.url}</a>`),
+            })
+          }
+        })
         result = await conn.query("INSERT INTO maile (id_kampanii, email) VALUES (?, ?)", [campaignId, mail]);
     })}
     finally {

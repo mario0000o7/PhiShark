@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest,res: NextApiResponse) 
     let result;
     try {
         conn = await pool.getConnection();
-        result = await conn.query("UPDATE maile SET skradzione_dane = 1 WHERE id_kampanii = ? AND email = ?", [decodedCampaignId.id, decodedCampaignId.email]);
+        result = await conn.query("UPDATE maile SET zalacznik = 1 WHERE id_kampanii = ? AND email = ?", [decodedCampaignId.id, decodedCampaignId.email]);
     } finally {
         if (conn) conn.release(); //release to pool
     }
