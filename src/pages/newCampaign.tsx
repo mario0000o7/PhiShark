@@ -58,14 +58,16 @@ export default function Home() {
     const selectRandomRows = () => {
         const totalRows = mails.length;
         const selectedRowCount = Math.round((range / 100) * totalRows);
-        const randomRows = [];
+        const allIndices = Array.from({ length: totalRows }, (_, i) => i); // Utwórz tablicę indeksów od 0 do totalRows - 1
 
-        while (randomRows.length < selectedRowCount) {
-            const randomIndex = Math.floor(Math.random() * totalRows);
-            if (!randomRows.includes(randomIndex)) {
-                randomRows.push(randomIndex.toString());
-            }
+        for (let i = totalRows - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [allIndices[i], allIndices[j]] = [allIndices[j], allIndices[i]];
         }
+
+        const selectedIndices = allIndices.slice(0, selectedRowCount); // Wybierz pierwsze selectedRowCount indeksów
+
+        const randomRows = selectedIndices.map(index => index.toString());
         setSelectedRows(randomRows);
     };
 
