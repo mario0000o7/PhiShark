@@ -1,64 +1,62 @@
 import Head from 'next/head'
-import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import MyNavbar from "@/components/MyNavbar";
-import React, {useState, useRef, useEffect} from "react";
-import {Table, Button, Textarea,Input,Text} from '@nextui-org/react';
-const { Configuration, OpenAIApi } = require("openai");
+import React, {useRef, useState} from "react";
+import {Button, Input, Table} from '@nextui-org/react';
 import {SSRProvider} from 'react-aria';
-import {func} from "prop-types";
 import MyModal from "@/components/MyModal";
+
+const {Configuration, OpenAIApi} = require("openai");
 
 export default function Home() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const handleOpenModal = () => {
-      setIsModalOpen(true);
+        setIsModalOpen(true);
     };
     const handleCloseModal = () => {
-      document.body.style.overflow = 'auto';
-      setIsModalOpen(false);
+        document.body.style.overflow = 'auto';
+        setIsModalOpen(false);
     };
-        const configuration = new Configuration({
-            apiKey: process.env.OPENAI_API_KEY,
-        });
+    const configuration = new Configuration({
+        apiKey: process.env.OPENAI_API_KEY,
+    });
+    new OpenAIApi(configuration);
+    const [mailContent, setMailContent] = useState("");
+    const [mail, setMail] = useState("");
+    const [range, setRange] = useState(100);
+    const [mails, setMails] = useState([]);
+    const [url, setUrl] = useState("");
+    const [aiRequest, setAiRequest] = useState("");
+    const [attachments, setAttachments] = useState("");
+    const inputRef = useRef(null);
+    const [selectedRows, setSelectedRows] = useState([]);
+    const [campaignName, setCampaignName] = useState("");
 
-        const openai = new OpenAIApi(configuration);
-        const [mailContent, setMailContent] = useState("");
-        const [mail, setMail] = useState("");
-        const [range, setRange] = useState(100);
-        const [mails, setMails] = useState([]);
-        const [url, setUrl] = useState("");
-        const [aiRequest, setAiRequest] = useState("");
-        const [attachments, setAttachments] = useState("");
-        const inputRef = useRef(null);
-        const [selectedRows, setSelectedRows] = useState([]);
-        const [campaignName,setCampaignName] = useState("");
-
-        function sendCampaign() {
-            if(campaignName==''){
-                alert("Podaj nazwę kampanii");
-                return;
-            }
-            if(selectedRows.length==0){
-                alert("Wybierz odbiorców");
-                return;
-            }
-            let selectedMails 
-            if(selectedRows === 'all'){
-                selectedMails = mails
-            } else {
-                selectedMails = mails.filter((mail, index) => selectedRows.has(index.toString()));
-            }
-            console.log(selectedMails)
-            console.log('You clicked submit.');
-            fetch('/api/sendMail', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({mailContent, mail, selectedMails, range, attachments, url, campaignName}),
-            })
+    function sendCampaign() {
+        if (campaignName == '') {
+            alert("Podaj nazwę kampanii");
+            return;
         }
+        if (selectedRows.length == 0) {
+            alert("Wybierz odbiorców");
+            return;
+        }
+        let selectedMails
+        if (selectedRows === 'all') {
+            selectedMails = mails
+        } else {
+            selectedMails = mails.filter((mail, index) => selectedRows.has(index.toString()));
+        }
+        console.log(selectedMails)
+        console.log('You clicked submit.');
+        fetch('/api/sendMail', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({mailContent, mail, selectedMails, range, attachments, url, campaignName}),
+        })
+    }
 
     async function generateAiResponse(event) {
         event.preventDefault();
@@ -67,7 +65,7 @@ export default function Home() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ text: aiRequest }),
+            body: JSON.stringify({text: aiRequest}),
         });
         const data = await response.json();
         setMailContent(data.result);
@@ -76,7 +74,7 @@ export default function Home() {
     const selectRandomRows = () => {
         const totalRows = mails.length;
         const selectedRowCount = Math.round((range / 100) * totalRows);
-        const allIndices = Array.from({ length: totalRows }, (_, i) => i); // Utwórz tablicę indeksów od 0 do totalRows - 1
+        const allIndices = Array.from({length: totalRows}, (_, i) => i); // Utwórz tablicę indeksów od 0 do totalRows - 1
 
         for (let i = totalRows - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -90,7 +88,7 @@ export default function Home() {
     };
 
     const handleSliderChange = (event) => {
-        console.log(event.target.value+"%");
+        console.log(event.target.value + "%");
         const value = parseInt(event.target.value);
         setRange(value);
         selectRandomRows();
@@ -99,24 +97,24 @@ export default function Home() {
 
     const fileInputRef = useRef(null);
     const handleSelectFileClick = () => {
-      fileInputRef.current.click();
+        fileInputRef.current.click();
     };
 
     const handleSelectFile = (event) => {
         const file = event.target.files[0];
         const reader = new FileReader();
         reader.onload = (e) => {
-          const contents = e.target.result;
-          const lines = contents.split('\n');
-          const emails = lines.map((line) => line.trim()).filter((line) => line.includes('@'));
-          setMails(emails);
-          console.log('Załadowane maile:', emails);
+            const contents = e.target.result;
+            const lines = contents.split('\n');
+            const emails = lines.map((line) => line.trim()).filter((line) => line.includes('@'));
+            setMails(emails);
+            console.log('Załadowane maile:', emails);
         };
         reader.readAsText(file);
-      };
+    };
 
     return (
-            <SSRProvider>
+        <SSRProvider>
             <>
                 <Head>
                     <title>Create Next App</title>
@@ -127,64 +125,73 @@ export default function Home() {
                 <MyNavbar/>
                 <MyModal isOpen={isModalOpen} onRequestClose={handleCloseModal}>
                     <div className={styles.container} onClick={handleCloseModal}>
-                        <div style={{width:'100%'}}>
-                            <h3 style={{ paddingLeft: "20px", paddingBottom: "120px"}}>Wpisz adres email, który zamierzasz użyć do podszycia się</h3>
-                            <h3 style={{paddingTop: "100px", paddingLeft: "20px"}}>Wpisz adres email, który chcesz dodać do listy</h3>
+                        <div style={{width: '100%'}}>
+                            <h3 style={{paddingLeft: "20px", paddingBottom: "120px"}}>Wpisz adres email, który
+                                zamierzasz użyć do podszycia się</h3>
+                            <h3 style={{paddingTop: "100px", paddingLeft: "20px"}}>Wpisz adres email, który chcesz dodać
+                                do listy</h3>
                         </div>
-                        <div style={{width:'100%'}}>
-                                <h3 style={{paddingLeft: "20px", paddingBottom: "120px"}}>Podaj nazwę kampanii, aby móc ją potem łatwo odszukać</h3>
-                                <h3 style={{paddingTop: "100px", paddingLeft: "20px"}}>Wpisz treść maila, który chcesz wysłać w ramach kampanii</h3>
+                        <div style={{width: '100%'}}>
+                            <h3 style={{paddingLeft: "20px", paddingBottom: "120px"}}>Podaj nazwę kampanii, aby móc ją
+                                potem łatwo odszukać</h3>
+                            <h3 style={{paddingTop: "100px", paddingLeft: "20px"}}>Wpisz treść maila, który chcesz
+                                wysłać w ramach kampanii</h3>
                         </div>
-                        <div style={{width:'100%'}}>
-                                <h3 style={{paddingLeft: "20px", paddingBottom: "120px"}}>Podaj link url, który chcesz przesłać w wiadomości</h3>
-                                <h3 style={{paddingTop: "100px", paddingLeft: "20px"}}>Wpisz zapytanie, które chcesz przesłać do AI, aby szybciej napisać maila</h3>
+                        <div style={{width: '100%'}}>
+                            <h3 style={{paddingLeft: "20px", paddingBottom: "120px"}}>Podaj link url, który chcesz
+                                przesłać w wiadomości</h3>
+                            <h3 style={{paddingTop: "100px", paddingLeft: "20px"}}>Wpisz zapytanie, które chcesz
+                                przesłać do AI, aby szybciej napisać maila</h3>
                         </div>
 
                     </div>
                 </MyModal>
                 <div className={styles.container}>
-                    <div style={{width:'100%'}}>
+                    <div style={{width: '100%'}}>
                         <form>
-                            <header style={{marginTop:'0'}} className={styles.header}>Adres email do podszycia:</header>
+                            <header style={{marginTop: '0'}} className={styles.header}>Adres email do podszycia:
+                            </header>
 
-                            <Input  bordered={true}
-                                    placeholder={'Wpisz adres email do podszycia'}
+                            <Input bordered={true}
+                                   placeholder={'Wpisz adres email do podszycia'}
 
-                                    css={{width: "100%",background:'#3B3B3B'}} onChange={event => setMail(event.target.value)}/>
+                                   css={{width: "100%", background: '#3B3B3B'}}
+                                   onChange={event => setMail(event.target.value)}/>
                         </form>
-                        <header style={{marginBottom:'5px'}} className={styles.header} >Adresy email:</header>
+                        <header style={{marginBottom: '5px'}} className={styles.header}>Adresy email:</header>
                         <Table
-                            style={{margin:'0px',padding:'0px',borderRadius:'20px',marginBottom:'0px'}}
-                               aria-label="Example static collection table with multiple selection"
-                               shadow={false}
-                               lined
-                               headerLined
-                                // onLoadMore={mails.length}
-                               css={{
-                                   width: "100%",
-                                   height: "calc($space$14 * 14)",
-                                   // maxHeight: "calc($space$14 * 10)",
-                                   padding: "0px",
-                                   margin: "0px",
-                                   background:'#3B4256',
-                               }}
-                                containerCss={{
-                                    width: "100%",
-                                    maxHeight: "calc($space$14 * 14)",
-                                }}
+                            style={{margin: '0px', padding: '0px', borderRadius: '20px', marginBottom: '0px'}}
+                            aria-label="Example static collection table with multiple selection"
+                            shadow={false}
+                            lined
+                            headerLined
+                            // onLoadMore={mails.length}
+                            css={{
+                                width: "100%",
+                                height: "calc($space$14 * 14)",
+                                // maxHeight: "calc($space$14 * 10)",
+                                padding: "0px",
+                                margin: "0px",
+                                background: '#3B4256',
+                            }}
+                            containerCss={{
+                                width: "100%",
+                                maxHeight: "calc($space$14 * 14)",
+                            }}
 
 
-                               selectionMode="multiple"
-                               selectedKeys={selectedRows}
-                               onSelectionChange={setSelectedRows}
+                            selectionMode="multiple"
+                            selectedKeys={selectedRows}
+                            onSelectionChange={setSelectedRows}
                         >
                             <Table.Header>
-                                <Table.Column css={{color:'white',textAlign:'center',width:'100%'}}>Adres Email</Table.Column>
+                                <Table.Column css={{color: 'white', textAlign: 'center', width: '100%'}}>Adres
+                                    Email</Table.Column>
                             </Table.Header>
                             <Table.Body>
                                 {mails?.map((mail, i) => (
                                     <Table.Row key={i}>
-                                        <Table.Cell css={{textAlign:'center',width:'100%'}}>{mail}</Table.Cell>
+                                        <Table.Cell css={{textAlign: 'center', width: '100%'}}>{mail}</Table.Cell>
                                     </Table.Row>
                                 ))}
                             </Table.Body>
@@ -199,51 +206,59 @@ export default function Home() {
                             bordered={true}
                             placeholder={'Wpisz adres email'}
 
-                            css={{width: "100%",marginBottom:'10px',background:'#3B3B3B'}} ref={inputRef}/>
-                        <Button color="gradient" css={{width:'100%'}} className={styles.button} onClick={() => {
-                            if(inputRef.current.value === "") return;
-                            if(inputRef.current.value.includes("@") === false) return;
+                            css={{width: "100%", marginBottom: '10px', background: '#3B3B3B'}} ref={inputRef}/>
+                        <Button color="gradient" css={{width: '100%'}} className={styles.button} onClick={() => {
+                            if (inputRef.current.value === "") return;
+                            if (inputRef.current.value.includes("@") === false) return;
                             setMails([...mails, inputRef.current.value])
                             inputRef.current.value = "";
                         }}>Dodaj adresy mail
                         </Button>
 
-                        <input type="file" accept=".csv" style={{ display: 'none' }} ref={fileInputRef} onChange={handleSelectFile} />
-                        <Button color="gradient" css={{width:'100%'}} className={styles.button} onPress={handleSelectFileClick}>Załaduj adresy email z pliku</Button>
+                        <input type="file" accept=".csv" style={{display: 'none'}} ref={fileInputRef}
+                               onChange={handleSelectFile}/>
+                        <Button color="gradient" css={{width: '100%'}} className={styles.button}
+                                onPress={handleSelectFileClick}>Załaduj adresy email z pliku</Button>
                         <h3 className={styles.header}>Przedział wysłania mailów</h3>
                         <input style={{width: "100%"}} type="range" min="0" max="100" value={range}
                                onChange={handleSliderChange}/>
                     </div>
-                    <div style={{width:'100%'}}>
+                    <div style={{width: '100%'}}>
                         <form>
-                            <header style={{marginTop:'0'}} className={styles.header}>Nazwa kampanii:</header>
+                            <header style={{marginTop: '0'}} className={styles.header}>Nazwa kampanii:</header>
                             <Input bordered={true}
-                                       placeholder={'Wpisz nazwę kampanii '}
+                                   placeholder={'Wpisz nazwę kampanii '}
 
-                                       css={{width: "100%",background:'#3B3B3B'}}  onChange={event => setCampaignName(event.target.value)}/>
+                                   css={{width: "100%", background: '#3B3B3B'}}
+                                   onChange={event => setCampaignName(event.target.value)}/>
                         </form>
                         <form>
-                            <header style={{marginTop:'0'}} className={styles.header}>Treść maila:</header>
-                            <textarea value={mailContent} style={{width: "100%"}} rows="31"
+                            <header style={{marginTop: '0'}} className={styles.header}>Treść maila:</header>
+                            <textarea value={mailContent} style={{width: "100%", borderRadius: '20px'}} rows="31"
 
                                       onChange={event => setMailContent(event.target.value)}></textarea>
                         </form>
-                        <Button color="gradient" css={{width:'100%'}} className={styles.button} onClick={sendCampaign}>Wyślij</Button>
+                        <Button color="gradient" css={{width: '100%'}} className={styles.button}
+                                onClick={sendCampaign}>Wyślij</Button>
                     </div>
-                    <div style={{width:'100%'}}>
+                    <div style={{width: '100%'}}>
                         <form>
-                            <header style={{marginTop:'0'}} className={styles.header}>Link Url:</header>
+                            <header style={{marginTop: '0'}} className={styles.header}>Link Url:</header>
                             <Input bordered={true}
-                                       placeholder={'Wpisz link url'}
+                                   placeholder={'Wpisz link url'}
 
-                                       css={{width: "100%",background:'#3B3B3B'}}  onChange={event => setUrl(event.target.value)}/>
-                            <Button color="gradient" css={{width:'100%'}} className={styles.button} onClick={handleOpenModal}>Pomoc
+                                   css={{width: "100%", background: '#3B3B3B'}}
+                                   onChange={event => setUrl(event.target.value)}/>
+                            <Button color="gradient" css={{width: '100%'}} className={styles.button}
+                                    onClick={handleOpenModal}>Pomoc
                             </Button>
                         </form>
                         <form onSubmit={generateAiResponse}>
                             <header className={styles.header}>Zapytanie do AI:</header>
-                            <textarea style={{width: "100%",borderRadius:'20px'} } onChange={event => setAiRequest(event.target.value)} rows="26"></textarea>
-                            <Button color="gradient" css={{width:'100%'}} className={styles.button} type="submit">Generuj</Button>
+                            <textarea style={{width: "100%", borderRadius: '20px'}}
+                                      onChange={event => setAiRequest(event.target.value)} rows={26}></textarea>
+                            <Button color="gradient" css={{width: '100%'}} className={styles.button}
+                                    type="submit">Generuj</Button>
 
                         </form>
                         <form>
@@ -254,6 +269,6 @@ export default function Home() {
 
                 </div>
             </>
-                </SSRProvider>
-        );
+        </SSRProvider>
+    );
 }
