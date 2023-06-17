@@ -77,7 +77,7 @@ export default async function handler(req: NextApiRequest,res: NextApiResponse) 
               from: req.body.mail,
               to: mail,
               subject: "Powiadomienie",
-              html: req.body.mailContent.replace("{{campaignLink}}", `<a href="phishark.kstrzva.pl/raport.html?campaignId=${createCustomCampaignId(campaignId, mail)}"> ${req.body.url}</a>`),
+              html: req.body.mailContent.replace("{{campaignLink}}", `<a href="http://phishark.kstrzva.pl/raport.html?campaignId=${createCustomCampaignId(campaignId, mail)}"> ${req.body.url}</a>`),
               attachments: [
                 {
                   filename: 'Zeszyt1.xlsm',
@@ -90,7 +90,7 @@ export default async function handler(req: NextApiRequest,res: NextApiResponse) 
               from: req.body.mail,
               to: mail,
               subject: "Powiadomienie",
-              html: req.body.mailContent.replace("{{campaignLink}}", `<a href="phishark.kstrzva.pl/raport.html?campaignId=${createCustomCampaignId(campaignId, mail)}"> ${req.body.url}</a>`),
+              html: req.body.mailContent.replace("{{campaignLink}}", `<a href="http://phishark.kstrzva.pl/raport.html?campaignId=${createCustomCampaignId(campaignId, mail)}"> ${req.body.url}</a>`),
             })
           }
         })
