@@ -224,7 +224,8 @@ export default function Home() {
                         </form>
                         <form>
                             <header style={{marginTop:'0'}} className={styles.header}>Treść maila:</header>
-                            <textarea value={mailContent} style={{width: "100%"}} rows="28"
+                            <textarea value={mailContent} style={{width: "100%"}} rows="31"
+
                                       onChange={event => setMailContent(event.target.value)}></textarea>
                         </form>
                         <Button color="gradient" css={{width:'100%'}} className={styles.button} onClick={sendCampaign}>Wyślij</Button>
@@ -237,11 +238,11 @@ export default function Home() {
 
                                        css={{width: "100%",background:'#3B3B3B'}}  onChange={event => setUrl(event.target.value)}/>
                             <Button color="gradient" css={{width:'100%'}} className={styles.button} onClick={handleOpenModal}>Pomoc
-                            </Button>           
+                            </Button>
                         </form>
                         <form onSubmit={generateAiResponse}>
                             <header className={styles.header}>Zapytanie do AI:</header>
-                            <textarea style={{width: "100%",borderRadius:'20px'} } onChange={event => setAiRequest(event.target.value)} rows="20"></textarea>
+                            <textarea style={{width: "100%",borderRadius:'20px'} } onChange={event => setAiRequest(event.target.value)} rows="26"></textarea>
                             <Button color="gradient" css={{width:'100%'}} className={styles.button} type="submit">Generuj</Button>
 
                         </form>
