@@ -55,6 +55,10 @@ export default async function handler(req: NextApiRequest,res: NextApiResponse) 
       result = await conn.query("INSERT INTO kampanie (nazwa, zalacznik, url) VALUES (?, 'none', 'none')", [req.body.campaignName]);
       result = await conn.query("SELECT * FROM kampanie WHERE nazwa = ?", [req.body.campaignName]);
       campaignId = result[0].id;
+    }catch (error){
+        if (conn) await conn.end(); //release to pool
+
+        return res.status(403).json({ message: "Name of campaign is already use" });
     } finally {
       if (conn) await conn.end(); //release to pool
     }
@@ -99,8 +103,8 @@ export default async function handler(req: NextApiRequest,res: NextApiResponse) 
     finally {
       if (conn) await conn.end(); //release to pool
     }  
-    //return res.status(200).json({ message: "Email sent successfully", campaignId: campaignId, capmaignDecoded: decodeCustomCampaignId(campaignId) });
-    return res.status(200);
+    // return res.status(200).json({ message: "Email sent successfully", campaignId: campaignId, capmaignDecoded: decodeCustomCampaignId(campaignId) });
+    return res.status(200).json({ message: "Email sent successfully", campaignId: campaignId});
 }
 
 

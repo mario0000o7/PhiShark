@@ -88,6 +88,9 @@ export default function MyChart({campaignId}:any) {
     const [optionsState,setOptionsState]=useState(options);
 
     function refreshChart(){
+        if(campaignId==0){
+            return;
+        }
         fetch(('/api/campaignDetails/'+campaignId))
             .then(response => response.json())
             .then(data => {
@@ -137,7 +140,7 @@ export default function MyChart({campaignId}:any) {
     useEffect(() => {
        refreshChart()
 
-    }, [campaignId, refreshChart])
+    }, [campaignId])
 
 
 
