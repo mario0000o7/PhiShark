@@ -39,6 +39,10 @@ export default function Home() {
                 alert("Podaj nazwę kampanii");
                 return;
             }
+            if(selectedRows.length==0){
+                alert("Wybierz odbiorców");
+                return;
+            }
             const selectedMails = mails.filter((mail, index) => selectedRows.has(index.toString()));
             console.log('You clicked submit.');
             fetch('/api/sendMail', {
