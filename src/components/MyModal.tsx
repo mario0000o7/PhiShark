@@ -51,8 +51,8 @@ const MyModal = ({ isOpen, onRequestClose, children }) => {
     }, []);
 
     const handleCloseModal = () => {
+        document.body.style.overflow = 'scroll';
         onRequestClose();
-        document.body.style.overflow = '';
       };
     
       const handleOpenModal = () => {

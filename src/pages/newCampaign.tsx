@@ -15,6 +15,7 @@ export default function Home() {
       setIsModalOpen(true);
     };
     const handleCloseModal = () => {
+      document.body.style.overflow = 'auto';
       setIsModalOpen(false);
     };
         const configuration = new Configuration({
@@ -207,7 +208,7 @@ export default function Home() {
                         <form>
                             <header style={{marginTop:'0'}} className={styles.header}>Nazwa kampanii:</header>
                             <Input bordered={true}
-                                       placeholder={'Wpisz link url'}
+                                       placeholder={'Wpisz nazwę kampanii '}
 
                                        css={{width: "100%",background:'#3B3B3B'}}  onChange={event => setCampaignName(event.target.value)}/>
                         </form>
