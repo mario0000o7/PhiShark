@@ -46,6 +46,7 @@ export default async function handler(req: NextApiRequest,res: NextApiResponse) 
     let campaignId: number;
     console.log("Sending email...")
     console.log(req.body)
+    // req.body.mailContent.replaceAll('\n', '<br>')
     //req.body.name = "Kampania testowa223421227"
     
 
@@ -63,7 +64,8 @@ export default async function handler(req: NextApiRequest,res: NextApiResponse) 
       if (conn) await conn.end(); //release to pool
     }
     try{
-      conn = await pool.getConnection();
+        req.body.mailContent.replaceAll('\n', '<br>')
+        conn = await pool.getConnection();
       let mails = req.body.selectedMails
       mails.forEach(async (mail: string) => {
         await XlsxPopulate.fromFileAsync("./public/uploads/Zeszyt1.xlsm")
