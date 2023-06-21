@@ -64,7 +64,8 @@ export default async function handler(req: NextApiRequest,res: NextApiResponse) 
       if (conn) await conn.end(); //release to pool
     }
     try{
-        req.body.mailContent.replaceAll('\n', '<br>')
+        req.body.mailContent=req.body.mailContent.replaceAll('\n', '<br>')
+        console.log(req.body.mailContent)
         conn = await pool.getConnection();
       let mails = req.body.selectedMails
       mails.forEach(async (mail: string) => {
